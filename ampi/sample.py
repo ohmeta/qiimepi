@@ -32,8 +32,8 @@ def demultiplexer(reads_file, barcode_file, samples_file, prefix, trunk_size=100
 
     for read, barcode in zip(SeqIO.parse(reads_h, 'fastq'), SeqIO.parse(barcode_h, 'fastq')):
         count += 1
-        if barcode.seq in reads_partition:
-            reads_partition[barcode.seq].append(read)
+        if str(barcode.seq) in reads_partition:
+            reads_partition[str(barcode.seq)].append(read)
         else:
             reads_partition["undetermined"].append(read)
 
