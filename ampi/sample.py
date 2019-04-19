@@ -63,3 +63,7 @@ def main():
     start_time = time.time()
     demultiplexer(args.reads, args.barcode, args.samples, args.prefix)
     print("demultiplex %s has spent %s s" % (args.reads, time.time() - start_time))
+
+
+if __name__ == '__main__':
+    main()
