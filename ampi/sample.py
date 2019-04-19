@@ -48,7 +48,7 @@ def demultiplexer(reads_file, barcode_file, samples_file, prefix, trunk_size=100
         if len(reads_partition[barcode_seq]) > 0:
             SeqIO.write(reads_partition[barcode_seq], out_partition[barcode_seq], 'fastq')
             reads_partition[barcode_seq] = []
-            out_partition[barcode_seq].close()
+        out_partition[barcode_seq].close()
 
 
 def main():
