@@ -1,0 +1,8 @@
+params:
+  samples: "samples.tsv"
+  demultiplex:
+    do: False
+
+results:
+  demultiplex: "results/00.demultiplex"
+

@@ -8,7 +8,23 @@ import pandas as pd
 import time
 
 
-def demultiplexer(reads_file, barcode_file, samples_file, prefix, trunk_size=1000000):
+def parse_samples(run_tsv, do_demultiplex=False):
+    # run reads barcode
+    if do_demultiplex:
+        return pd.read_csv(run_tsv, sep='\t')\
+                 .assign(id=lambda x: str(x.run) + "_" + str(x.barcode_id))\
+                 .assign(fq=lambda x: os.path.join(config["results"]["demultiplex"],
+                                                   str(x.id) + ".fq.gz"))\
+                 .set_index("run", drop=False)
+    else:
+        return pd.read_csv(run_tsv, sep='\s+').set_index("run", drop=False)
+
+
+def get_run_fq(sample_df, wildcards, col):
+    return sample_df.loc[[wildcards.run], col].dropna().tolist()[0]
+
+
+def demultiplexer(reads_file, barcode_file, sample_barcode, prefix, trunk_size=1000000):
     if reads_file.endswith(".gz"):
         reads_h = gzip.open(reads_file, 'rt')
     else:
@@ -17,15 +33,12 @@ def demultiplexer(reads_file, barcode_file, samples_file, prefix, trunk_size=100
         barcode_h = gzip.open(barcode_file, 'rt')
     else:
         barcode_h = open(barcode_file, 'r')
-    sample_barcode = pd.read_csv(samples_file, sep='\t').set_index('barcode', drop=False)
-    sample_barcode = sample_barcode.assign(filename=sample_barcode.barcode_num.apply(
-        lambda x: prefix + "_" + str(x) + ".fq.gz"))
 
     reads_partition = {}
     out_partition = {}
     for barcode_seq in sample_barcode.index:
         reads_partition[barcode_seq] = []
-        out_partition[barcode_seq] = bgzf.BgzfWriter(sample_barcode.loc[barcode_seq, "filename"], 'wb')
+        out_partition[barcode_seq] = bgzf.BgzfWriter(sample_barcode.loc[barcode_seq, "fq"], 'wb')
     reads_partition["undetermined"] = []
     out_partition["undetermined"] = bgzf.BgzfWriter(prefix + "_undetermined" + ".fq.gz", 'wb')
     count = 0
@@ -61,8 +74,13 @@ def main():
     args = parser.parse_args()
     os.makedirs(os.path.dirname(args.prefix), exist_ok=True)
     start_time = time.time()
-    demultiplexer(args.reads, args.barcode, args.samples, args.prefix)
-    print("demultiplex %s has spent %s s" % (args.reads, time.time() - start_time))
+
+    sample_barcode = pd.read_csv(args.samples, sep='\t').set_index('barcode', drop=False)
+    sample_barcode = sample_barcode.assign(fq=sample_barcode.barcode_id.apply(
+        lambda x: args.prefix + "_" + str(x) + ".fq.gz"))
+
+    demultiplexer(args.reads, args.barcode, sample_barcode, args.prefix)
+    print("demultiplex %d samples form %s has spent %s s" % (len(sample_barcode), args.reads, time.time() - start_time))
 
 
 if __name__ == '__main__':

@@ -1,0 +1,16 @@
+#!/usr/bin/env snakemake
+
+from ampi import sample
+import pandas as pd
+
+shell.executable("bash")
+
+configfile: "config.yaml"
+
+_samples = sample.parse_samples(config["params"]["samples"], config["params"]["demultiplex"]["do"])
+
+include: "rules/output.smk"
+include: "rules/demultiplex.smk"
+
+rule:
+    input: all
