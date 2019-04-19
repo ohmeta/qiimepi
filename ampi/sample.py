@@ -3,11 +3,12 @@
 import argparse
 import os
 import gzip
-from Bio import SeqIO
+from Bio import SeqIO, bgzf
 import pandas as pd
+import time
 
 
-def split(reads_file, barcode_file, samples_file, prefix):
+def demultiplexer(reads_file, barcode_file, samples_file, prefix, trunk_size=1000000):
     if reads_file.endswith(".gz"):
         reads_h = gzip.open(reads_file, 'rt')
     else:
@@ -24,19 +25,24 @@ def split(reads_file, barcode_file, samples_file, prefix):
     out_partition = {}
     for barcode_seq in sample_barcode.index:
         reads_partition[barcode_seq] = []
-        out_partition[barcode_seq] = gzip.open(sample_barcode.loc[barcode_seq, "filename"], 'wb')
+        out_partition[barcode_seq] = bgzf.BgzfWriter(sample_barcode.loc[barcode_seq, "filename"], 'wb')
+    reads_partition["undetermined"] = []
+    out_partition["undetermined"] = bgzf.BgzfWriter(prefix + "_undetermined" + ".fq.gz", 'wb')
     count = 0
 
     for read, barcode in zip(SeqIO.parse(reads_h, 'fastq'), SeqIO.parse(barcode_h, 'fastq')):
+        count += 1
         if barcode.seq in reads_partition:
-            count += 1
             reads_partition[barcode.seq].append(read)
-            if count == 100000:
-                for barcode_seq in reads_partition:
-                    if len(reads_partition[barcode_seq]) > 0:
-                        SeqIO.write(reads_partition[barcode_seq], out_partition[barcode_seq], 'fastq')
-                        reads_partition[barcode_seq] = []
-                count = 0
+        else:
+            reads_partition["undetermined"].append(read)
+
+        if count == trunk_size:
+            for barcode_seq in reads_partition:
+                if len(reads_partition[barcode_seq]) > 0:
+                    SeqIO.write(reads_partition[barcode_seq], out_partition[barcode_seq], 'fastq')
+                    reads_partition[barcode_seq] = []
+            count = 0
 
     for barcode_seq in reads_partition:
         if len(reads_partition[barcode_seq]) > 0:
@@ -53,5 +59,7 @@ def main():
     parser.add_argument('-p', '--prefix', type=str, help='output prefix')
 
     args = parser.parse_args()
-    outdir = os.path.basename(args.prefix)
-    os.makedirs(outdir, exist_ok=True)
+    os.makedirs(os.path.dirname(args.prefix), exist_ok=True)
+    start_time = time.time()
+    demultiplexer(args.reads, args.barcode, args.samples, args.prefix)
+    print("demultiplex %s has spent %s s" % (args.reads, time.time() - start_time))
