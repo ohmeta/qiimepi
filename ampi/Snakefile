@@ -7,7 +7,14 @@ shell.executable("bash")
 
 configfile: "config.yaml"
 
-_samples = sample.parse_samples(config["params"]["samples"], config["params"]["demultiplex"]["do"])
+_samples = sample.parse_samples(config["params"]["samples"],
+                                config["results"]["demultiplex"],
+                                config["params"]["demultiplex"]["do"])
+
+from pprint import pprint
+pprint(pd.read_csv(config["params"]["samples"], sep='\t'))
+pprint(_samples)
+_samples.to_csv("./samples_2.tsv", sep='\t', index=False)
 
 include: "rules/output.smk"
 include: "rules/demultiplex.smk"

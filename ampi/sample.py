@@ -8,16 +8,16 @@ import pandas as pd
 import time
 
 
-def parse_samples(run_tsv, do_demultiplex=False):
+def parse_samples(run_tsv, out_dir, do_demultiplex=False):
     # run reads barcode
+    samples_df = pd.read_csv(run_tsv, sep='\s+')
     if do_demultiplex:
-        return pd.read_csv(run_tsv, sep='\t')\
-                 .assign(id=lambda x: str(x.run) + "_" + str(x.barcode_id))\
-                 .assign(fq=lambda x: os.path.join(config["results"]["demultiplex"],
-                                                   str(x.id) + ".fq.gz"))\
-                 .set_index("run", drop=False)
-    else:
-        return pd.read_csv(run_tsv, sep='\s+').set_index("run", drop=False)
+        samples_df = samples_df\
+            .assign(id=samples_df.apply(lambda x: str(x.run) + "_" + str(x.barcode_id)),
+                    fq=samples_df.apply(lambda x: os.path.join(out_dir, str(x.id) + ".fq.gz")))
+    import pprint
+    pprint.pprint(samples_df)
+    return samples_df
 
 
 def get_run_fq(sample_df, wildcards, col):
