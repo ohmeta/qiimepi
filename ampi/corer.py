@@ -274,7 +274,7 @@ def main():
         formatter_class=ampi.custom_help_formatter,
         parents=[common_parser, run_parser],
         prog="ampi qiime2_wf",
-        help="amplicon data analysis pipeline",
+        help="amplicon data analysis pipeline using QIIME2",
     )
 
     parser_init.add_argument(
