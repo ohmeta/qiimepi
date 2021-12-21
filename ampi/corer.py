@@ -12,9 +12,7 @@ import pandas as pd
 import ampi
 
 QIIME2_WF = [
-    "simulate_all",
-    "denoise",
-    "taxonomic",
+    "qiime2_import",
     "all",
 ]
 

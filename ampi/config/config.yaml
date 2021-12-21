@@ -1,9 +1,10 @@
 params:
   samples: "samples.tsv"
+  type: "SampleData[PairedEndSequencesWithQuality]"
+  format: "PairedEndFastqManifestPhred64V2"
 
-
-results:
-
+output:
+  import: "results/00.import"
 
 envs:
   qiime2: "envs/qiime2.yaml"
