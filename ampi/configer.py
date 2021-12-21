@@ -82,7 +82,7 @@ class ampconfig:
         if not os.path.exists(self.work_dir):
             os.mkdir(self.work_dir)
 
-        for sub_dir in metaconfig.sub_dirs:
+        for sub_dir in ampconfig.sub_dirs:
             os.makedirs(os.path.join(self.work_dir, sub_dir), exist_ok=True)
 
         for i in os.listdir(self.envs_dir):

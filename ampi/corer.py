@@ -88,17 +88,13 @@ def init(args, unknown):
                 os.path.realpath(args.workdir), f"envs/{env_name}.yaml"
             )
 
-        conf = update_config_tools(
-            conf, args.begin, args.trimmer, args.rmhoster, args.assembler, args.binner
-        )
-
         if args.samples:
             conf["params"]["samples"] = args.samples
         else:
             print("Please supply samples table")
             sys.exit(-1)
 
-        update_config(
+        ampi.update_config(
             project.config_file, project.new_config_file, conf, remove=False
         )
     else:

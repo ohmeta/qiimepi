@@ -1,0 +1,9 @@
+params:
+  samples: "samples.tsv"
+
+
+results:
+
+
+envs:
+  qiime2: "envs/qiime2.yaml"
