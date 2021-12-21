@@ -23,4 +23,5 @@ include: "../rules/qiime2_taxonomic.smk"
 
 rule all:
     input:
-        rules.qiime2_import_all.input
+        rules.qiime2_import_all.input,
+        rules.qiime2_denoise_all.input

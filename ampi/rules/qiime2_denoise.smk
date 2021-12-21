@@ -59,6 +59,44 @@ rule qiime2_denoise_deblur:
         --p-left-trim-length {params.left_trim_len} \
         --p-sample-stats \
         --o-representative-sequences {output.rep_seq} \
-        --o-table {output.tab} \
+        --o-table {output.table} \
         --o-stats {output.stats} >> {log} 2>& 1
         '''
+
+
+def gen_denoise_output():
+    output = []
+
+    dada2_output = [
+        os.path.join(config["output"]["denoise"], "dada2/rep_seqs.qza"),
+        os.path.join(config["output"]["denoise"], "dada2/table.qza"),
+        os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza")]
+
+    deblur_output = [
+        os.path.join(config["output"]["denoise"], "deblur/demux_filtered.qza"),
+        os.path.join(config["output"]["denoise"], "deblur/demux_filtered_stats.qza"),
+        os.path.join(config["output"]["denoise"], "deblur/rep_seqs.qza"),
+        os.path.join(config["output"]["denoise"], "deblur/table.qza"),
+        os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qza") ]
+
+    if config["params"]["denoise"]["dada2"]["do"]:
+        output += dada2_output
+
+    if config["params"]["denoise"]["deblur"]["do"]:
+        output += deblur_output
+
+    return output
+
+
+rule qiime2_denoise_all:
+    input:
+        gen_denoise_output()
+
+        #os.path.join(config["output"]["denoise"], "dada2/rep_seqs.qza"),
+        #os.path.join(config["output"]["denoise"], "dada2/table.qza"),
+        #os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza"),
+        #os.path.join(config["output"]["denoise"], "deblur/demux_filtered.qza"),
+        #os.path.join(config["output"]["denoise"], "deblur/demux_filtered_stats.qza"),
+        #os.path.join(config["output"]["denoise"], "deblur/rep_seqs.qza"),
+        #os.path.join(config["output"]["denoise"], "deblur/table.qza"),
+        #os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qza")
