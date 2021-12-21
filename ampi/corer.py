@@ -12,7 +12,7 @@ import pandas as pd
 import ampi
 
 QIIME2_WF = [
-    "qiime2_import",
+    "qiime2_import_all",
     "all",
 ]
 

@@ -1,10 +1,27 @@
 params:
   samples: "samples.tsv"
-  type: "SampleData[PairedEndSequencesWithQuality]"
-  format: "PairedEndFastqManifestPhred64V2"
+
+  import:
+    type: "SampleData[PairedEndSequencesWithQuality]"
+    format: "PairedEndFastqManifestPhred64V2"
+    #format: CasavaOneEightSingleLanePerSampleDirFmt
+
+  denoise:
+    threads: 8
+    dada2:
+      do: True
+      trunc_len_f: 280
+      trunc_len_r: 250
+      trim_left_f: 0
+      trim_left_r: 0
+    deblur:
+      do: False
+      trim_len: 280
+      left_trim_len: 0
 
 output:
   import: "results/00.import"
+  denoise: "results/01.denoise"
 
 envs:
   qiime2: "envs/qiime2.yaml"
