@@ -18,10 +18,14 @@ params:
       do: False
       trim_len: 280
       left_trim_len: 0
+  taxonomic:
+    threads: 8
+    classifier: /home/zhujie/databases/ecogenomics/QIIME2/taxonomic_classifier/silva-138-99-nb-classifier.qza
 
 output:
   import: "results/00.import"
   denoise: "results/01.denoise"
+  taxonomic: "results/03.taxonomic"
 
 envs:
   qiime2: "envs/qiime2.yaml"
