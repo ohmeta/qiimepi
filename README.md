@@ -1,6 +1,9 @@
 # Amplicon analysis pipeline using QIIME2 (WIP)
 
 
+<div align=center><img width="500" height="280" src="docs/dag.svg"/></div>
+
+
 ```
 $ python run_ampi.py --help
 
