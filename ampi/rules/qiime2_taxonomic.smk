@@ -11,6 +11,8 @@ rule qiime2_taxonomic:
         config["params"]["taxonomic"]["threads"]
     shell:
         '''
+        export TMPDIR={TMPDIR}
+
         qiime feature-classifier classify-sklearn \
         --i-classifier {params.classifier} \
         --i-reads {input.rep_seq} \

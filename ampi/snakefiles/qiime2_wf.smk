@@ -1,6 +1,7 @@
 #!/usr/bin/env snakemake
 
 import sys
+import os
 import ampi
 import pandas as pd
 
@@ -13,6 +14,10 @@ AMPI_DIR = ampi.__path__[0]
 #READS_FORMAT = "sra" \
 #    if "sra" in SAMPLES.columns \
 #       else "fastq"
+
+TMPDIR = os.path.realpath(config["output"]["tmp"])
+os.environ["TMPDIR"] = TMPDIR
+os.makedirs(config["output"]["tmp"], exist_ok=True)
 
 
 DENOISER = []

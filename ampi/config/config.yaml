@@ -23,6 +23,7 @@ params:
     classifier: /home/zhujie/databases/ecogenomics/QIIME2/taxonomic_classifier/silva-138-99-nb-classifier.qza
 
 output:
+  tmp: "results/tmp"
   import: "results/00.import"
   denoise: "results/01.denoise"
   taxonomic: "results/03.taxonomic"

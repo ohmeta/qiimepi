@@ -37,6 +37,8 @@ rule qiime2_import_summarize:
         qzv = os.path.join(config["output"]["import"], "demux.qzv")
     shell:
         '''
+        export TMPDIR={TMPDIR}
+
         qiime demux summarize \
         --i-data {input.qza} \
         --o-visualization {output.qzv}
