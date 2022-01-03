@@ -1,10 +1,27 @@
 params:
   samples: "samples.tsv"
 
+  # https://docs.qiime2.org/2021.11/tutorials/importing/
   import:
     type: "SampleData[PairedEndSequencesWithQuality]"
+    # EMPSingleEndSequences
+    # EMPPairedEndSequences
+    # MultiplexedSingleEndBarcodeInSequence
+    # MultiplexedPairedEndBarcodeInSequence
+    # SampleData[SequencesWithQuality]
+    # SampleData[PairedEndSequencesWithQuality]
+    # FeatureTable[Frequency]
+    # Phylogeny[Unrooted]
+
     format: "PairedEndFastqManifestPhred64V2"
-    #format: CasavaOneEightSingleLanePerSampleDirFmt
+    # CasavaOneEightSingleLanePerSampleDirFmt
+    # SingleEndFastqManifestPhred33V2
+    # SingleEndFastqManifestPhred64V2
+    # PairedEndFastqManifestPhred33V2
+    # PairedEndFastqManifestPhred64V2
+    # BIOMV100Format
+    # BIOMV210Format
+
 
   denoise:
     threads: 8
