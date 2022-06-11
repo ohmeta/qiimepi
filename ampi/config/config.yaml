@@ -27,10 +27,14 @@ params:
     threads: 8
     dada2:
       do: True
-      trunc_len_f: 280
-      trunc_len_r: 250
-      trim_left_f: 0
-      trim_left_r: 0
+      paired:
+        trunc_len_f: 280
+        trunc_len_r: 250
+        trim_left_f: 0
+        trim_left_r: 0
+      single:
+        trunc_len: 120
+        trim_left: 0
     deblur:
       do: False
       trim_len: 280

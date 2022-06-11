@@ -1,15 +1,3 @@
-#def raw_short_reads(wildcards):
-#    if READS_FORMAT == "fastq":
-#        if IS_PE:
-#            return [ampi.get_reads(SAMPLES, wildcards, "fq1"),
-#                    ampi.get_reads(SAMPLES, wildcards, "fq2")]
-#        else:
-#            return [ampi.get_reads(SAMPLES, wildcards, "fq1")]
-#
-#    elif READS_FORMAT == "sra":
-#        return [ampi.get_reads(SAMPLES, wildcards, "sra")]
-
-
 rule qiime2_import:
     input:
         config["params"]["samples"]
