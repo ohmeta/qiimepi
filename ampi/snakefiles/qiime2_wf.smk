@@ -16,7 +16,7 @@ if "Paired" in config["params"]["import"]["type"]:
 else:
     reads_layout = "SE"
 
-SAMPLES = ampi.parse_samples(config["params"]["samples"], reads_layout, TRUE)
+SAMPLES = ampi.parse_samples(config["params"]["samples"], reads_layout, True)
 
 #READS_FORMAT = "sra" \
 #    if "sra" in SAMPLES.columns \
