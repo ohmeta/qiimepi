@@ -1,4 +1,4 @@
-# Amplicon analysis pipeline using QIIME2 (WIP)
+# Amplicon analysis pipeline using QIIME2
 
 
 <div align=center><img width="500" height="280" src="docs/dag.svg"/></div>
