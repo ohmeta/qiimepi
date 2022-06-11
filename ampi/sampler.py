@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
+import os
+import sys
 import pandas as pd
 
 
-def parse_samples(samples_tsv, reads_layout="pe", check_samples=False):
+def parse_samples(samples_tsv, reads_layout="PE", check_samples=False):
     samples_df = pd.read_csv(samples_tsv, sep="\t")\
                    .set_index("sample-id", drop=False)
 
@@ -24,7 +26,7 @@ def parse_samples(samples_tsv, reads_layout="pe", check_samples=False):
                     if not os.path.exists(fq_file):
                         print(f"{fq_file} not exists")
                         cancel = True
-                    if reads_layout == "pe":
+                    if reads_layout == "PE":
                         if len(fq2_list) == 0:
                             print(f"{sample_id} fq2 not exists")
                             cancel = True
