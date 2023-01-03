@@ -8,6 +8,8 @@ rule qiime2_import:
         format = config["params"]["import"]["format"]
     log:
         os.path.join(config["output"]["import"], "logs/qiime_import.log")
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime tools import \
@@ -23,6 +25,8 @@ rule qiime2_import_summarize:
         qza = os.path.join(config["output"]["import"], "demux.qza")
     output:
         qzv = os.path.join(config["output"]["import"], "demux.qzv")
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         export TMPDIR={TMPDIR}
@@ -38,6 +42,8 @@ rule qiime2_import_summarize_export:
         qzv = os.path.join(config["output"]["import"], "demux.qzv")
     output:
         qzv_out = directory(os.path.join(config["output"]["import"], "demux_qzv"))
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime tools export \

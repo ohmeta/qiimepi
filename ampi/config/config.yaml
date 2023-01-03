@@ -61,4 +61,4 @@ output:
 
 
 envs:
-  qiime2: "envs/qiime2-2022.11-py38-linux-conda.yml"
+  qiime2: "envs/qiime2.yaml"

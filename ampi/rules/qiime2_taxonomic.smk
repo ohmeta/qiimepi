@@ -9,6 +9,8 @@ rule qiime2_taxonomic:
         os.path.join(config["output"]["taxonomic"], "logs/taxonomic_{denoiser}.log")
     threads:
         config["params"]["taxonomic"]["threads"]
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         export TMPDIR={TMPDIR}

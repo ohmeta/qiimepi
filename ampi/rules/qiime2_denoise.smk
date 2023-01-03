@@ -15,6 +15,8 @@ if reads_layout == "PE":
             os.path.join(config["output"]["denoise"], "logs/denoise_dada2.log")
         threads:
             config["params"]["denoise"]["threads"]
+        conda:
+            config["envs"]["qiime2"]
         shell:
             '''
             qiime dada2 denoise-paired \
@@ -46,6 +48,8 @@ else:
             os.path.join(config["output"]["denoise"], "logs/denoise_dada2.log")
         threads:
             config["params"]["denoise"]["threads"]
+        conda:
+            config["envs"]["qiime2"]
         shell:
             '''
             qiime dada2 denoise-single\
@@ -65,6 +69,8 @@ rule qiime2_denoise_dada2_visualization:
         stats = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza")
     output:
         stats = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qzv")
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime metadata tabulate \
@@ -82,6 +88,8 @@ rule qiime2_denoise_dada2_export:
         rep_seq = directory(os.path.join(config["output"]["denoise"], "dada2/rep_seqs_qza")),
         table = directory(os.path.join(config["output"]["denoise"], "dada2/table_qza")),
         stats = directory(os.path.join(config["output"]["denoise"], "dada2/denoise_stats_qza"))
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime tools export \
@@ -119,6 +127,8 @@ rule qiime2_denoise_deblur:
         os.path.join(config["output"]["denoise"], "logs/denoise_deblur.log")
     threads:
         config["params"]["denoise"]["threads"]
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         echo "Running qiime quality-filter q-score" > {log} 2>&1
@@ -146,6 +156,8 @@ rule qiime2_denoise_deblur_visualization:
     output:
         demux_stats = os.path.join(config["output"]["denoise"], "deblur/demux_filtered_stats.qzv"),
         stats = os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qzv")
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime metadata tabulate \
@@ -167,6 +179,8 @@ rule qiime2_denoise_deblur_export:
         rep_seq = directory(os.path.join(config["output"]["denoise"], "deblur/rep_seqs_qza")),
         table = directory(os.path.join(config["output"]["denoise"], "deblur/table_qza")),
         stats = directory(os.path.join(config["output"]["denoise"], "deblur/denoise_stats_qza"))
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime tools export \
