@@ -20,7 +20,7 @@
 ➤ conda install -c bioconda -c conda-forge snakemake fd-find seqkit
 ```
 
-### Set PYTHONPATH for ampi 
+### Set PYTHONPATH for ampi
 
 ```bash
 ➤ echo "export PYTHONPATH=/path/to/ampi:$PYTHONPATH" >> ~/.bashrc
