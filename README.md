@@ -1,10 +1,8 @@
-# Amplicon analysis pipeline using QIIME2
-
+# Amplicon analysis pipeline
 
 <div align=center><img width="500" height="280" src="docs/dag.svg"/></div>
 
-
-```
+```bash
 $ python run_ampi.py --help
 
 usage: ampi [-h] [-v]  ...
@@ -29,4 +27,3 @@ available subcommands:
     init         init project
     qiime2_wf    amplicon data analysis pipeline using QIIME2
 ```
-

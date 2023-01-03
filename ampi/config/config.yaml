@@ -39,9 +39,19 @@ params:
       do: False
       trim_len: 280
       left_trim_len: 0
+
+
   taxonomic:
     threads: 8
-    classifier: /home/zhujie/databases/ecogenomics/QIIME2/taxonomic_classifier/silva-138-99-nb-classifier.qza
+    classifier: /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/gg-13-8-99-515-806-nb-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/gg-13-8-99-515-806-nb-weighted-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/gg-13-8-99-nb-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/gg-13-8-99-nb-weighted-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-515-806-nb-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-classifier.qza
+                # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza
+
 
 output:
   tmp: "results/tmp"
@@ -49,5 +59,6 @@ output:
   denoise: "results/01.denoise"
   taxonomic: "results/03.taxonomic"
 
+
 envs:
-  qiime2: "envs/qiime2.yaml"
+  qiime2: "envs/qiime2-2022.11-py38-linux-conda.yml"
