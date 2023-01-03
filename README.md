@@ -56,7 +56,8 @@ available subcommands:
 ```bash
 ➤ fd fastq.gz /full/path/to/MiSeq_SOP | \
   sort | uniq | paste - - | \
-  awk -F'[/_]' 'BEGIN {print "sample-id\tforward-absolute-filepath\treverse-absolute-filepath"};{ print $(NF-4) "\t" $0}' \
+  awk -F'[/_]' \
+  'BEGIN {print "sample-id\tforward-absolute-filepath\treverse-absolute-filepath"};{print $(NF-4) "\t" $0}' \
   > samples.tsv
 ```
 
@@ -237,19 +238,10 @@ results/
 │   │       └── feature-table.tsv
 │   └── logs
 │       └── denoise_dada2.log
-├── 03.taxonomic
-│   ├── dada2
-│   │   └── taxonomy.qza
-│   └── logs
 │       └── taxonomic_dada2.log
-└── tmp
-    └── qiime2
-        └── jiezhu
-            ├── data
-            ├── keys
-            ├── pools
-            ├── processes
-            └── VERSION
-
-25 directories, 43 files
+└── 03.taxonomic
+    ├── dada2
+    │   └── taxonomy.qza
+    └── logs
+        └── taxonomic_dada2.log
 ```
