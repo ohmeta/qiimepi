@@ -5,8 +5,24 @@
 
 ## Installation
 
+### Basic environment
+
 ```bash
-➤ git clone https://github.com/ohmeta/ampi
+➤ mkdir -p ~/.conda/envs
+➤ wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
+➤ bash Mambaforge-Linux-x86_64.sh
+# set the install path to ~/.conda/envs/mambaforge
+
+# then activate mambaforge
+➤ conda activate mambaforge
+
+# install snakemake
+➤ conda install -c bioconda -c conda-forge snakemake fd-find seqkit
+```
+
+### Set PYTHONPATH for ampi 
+
+```bash
 ➤ echo "export PYTHONPATH=/path/to/ampi:$PYTHONPATH" >> ~/.bashrc
 # relogin
 ```
@@ -14,6 +30,7 @@
 ## Overview
 
 ```bash
+➤ conda activate mambaforge
 ➤ python /path/to/ampi/run_ampi.py --help
 
 usage: ampi [-h] [-v]  ...
@@ -40,6 +57,13 @@ available subcommands:
 ```
 
 ## Real word
+
+### Step_0: Activate conda environment
+
+```bash
+# for snakemake
+➤ conda activate mambaforge
+```
 
 ### Step_1: download test data
 
@@ -68,11 +92,11 @@ available subcommands:
 ➤ python /path/to/ampi/run_ampi.py init -d . -s samples.tsv
 
 ➤ ll
-.rw-rw-r-- 2.3k jiezhu  3 Jan 18:59 config.yaml
-drwxrwxr-x    - jiezhu  3 Jan 18:04 envs
-drwxrwxr-x    - jiezhu  3 Jan 18:04 profiles
-drwxrwxr-x    - jiezhu  3 Jan 19:01 results
-.rw-rw-r-- 3.5k jiezhu  3 Jan 16:56 samples.miseq_sop.tsv
+config.yaml
+envs
+profiles
+results
+samples.miseq_sop.tsv
 ```
 
 ### Step 4: update config.yaml
@@ -95,7 +119,7 @@ params:
     # FeatureTable[Frequency]
     # Phylogeny[Unrooted]
 
-    format: "PairedEndFastqManifestPhred64V2"
+    format: "PairedEndFastqManifestPhred33V2"
     # CasavaOneEightSingleLanePerSampleDirFmt
     # SingleEndFastqManifestPhred33V2
     # SingleEndFastqManifestPhred64V2
@@ -110,8 +134,8 @@ params:
     dada2:
       do: True
       paired:
-        trunc_len_f: 280
-        trunc_len_r: 250
+        trunc_len_f: 280 # change to 240
+        trunc_len_r: 250 # change to 160
         trim_left_f: 0
         trim_left_r: 0
       single:
@@ -245,3 +269,36 @@ results/
     └── logs
         └── taxonomic_dada2.log
 ```
+
+## Note
+
+### [Sequence phred quality score](https://en.wikipedia.org/wiki/FASTQ_format)
+
+```bash
+➤ seqkit convert xx.fq.gz | head
+```
+
+Phred Score table
+| Quality system name | Phred Score  | Coordinates                   |
+| :-----------------: | :----------: | :---------------------------: |
+| S - Sanger          |   Phred+33   |  raw reads typically (0, 40)  |
+| X - Solexa          |   Solexa+64  |  raw reads typically (-5, 40) |
+| I - Illumina 1.3+   |   Phred+64   |  raw reads typically (0, 40)  |
+| J - Illumina 1.5+   |   Phred+64   |  raw reads typically (3, 41)  |
+| L - Illumina 1.8+   |   Phred+33   |  raw reads typically (0, 41)  |
+| P - PacBio          |   Phred+33   |  HiFi reads typically (0, 93) |
+
+### [QIIME2 taxonomy database Version 2022.11](https://docs.qiime2.org/2022.11/data-resources)
+
+#### Taxonomy classifiers for use with q2-feature-classifier
+
+- [Silva 138 99% OTUs full-length sequences](https://data.qiime2.org/2022.11/common/silva-138-99-nb-classifier.qza)
+- [Silva 138 99% OTUs from 515F/806R region of sequences](https://data.qiime2.org/2022.11/common/silva-138-99-515-806-nb-classifier.qza)
+- [Greengenes 13_8 99% OTUs full-length sequences](https://data.qiime2.org/2022.11/common/gg-13-8-99-nb-classifier.qza)
+- [Greengenes 13_8 99% OTUs from 515F/806R region of sequences](https://data.qiime2.org/2022.11/common/gg-13-8-99-515-806-nb-classifier.qza)
+
+#### Weighted Taxonomic Classifiers
+
+- [Weighted Silva 138 99% OTUs full-length sequences](https://data.qiime2.org/2022.11/common/silva-138-99-nb-weighted-classifier.qza)
+- [Weighted Greengenes 13_8 99% OTUs full-length sequences](https://data.qiime2.org/2022.11/common/gg-13-8-99-nb-weighted-classifier.qza)
+- [Weighted Greengenes 13_8 99% OTUs from 515F/806R region of sequences](https://data.qiime2.org/2022.11/common/gg-13-8-99-515-806-nb-weighted-classifier.qza)

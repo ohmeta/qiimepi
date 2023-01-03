@@ -13,7 +13,7 @@ params:
     # FeatureTable[Frequency]
     # Phylogeny[Unrooted]
 
-    format: "PairedEndFastqManifestPhred64V2"
+    format: "PairedEndFastqManifestPhred33V2"
     # CasavaOneEightSingleLanePerSampleDirFmt
     # SingleEndFastqManifestPhred33V2
     # SingleEndFastqManifestPhred64V2
