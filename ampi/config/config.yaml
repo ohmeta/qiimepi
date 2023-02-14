@@ -1,5 +1,6 @@
 params:
   samples: "samples.tsv"
+  metadata: "samples_metadata.tsv"
 
   # https://docs.qiime2.org/2021.11/tutorials/importing/
   import:
