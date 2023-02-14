@@ -126,6 +126,26 @@ rule qiime2_denoise_dada2_export:
         '''
 
 
+rule qiime2_denoise_dada2_visualization_export:
+    input:
+        qzv = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qzv")
+    output:
+        directory(os.path.join(config["output"]["denoise"], "dada2/denoise_stats_qzv"))
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_dada2_visualization_export.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_dada2_visualization_export.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input.qzv} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_denoise_deblur:
     input:
         os.path.join(config["output"]["import"], "demux.qza")
@@ -231,30 +251,60 @@ rule qiime2_denoise_deblur_export:
         '''
 
 
+rule qiime2_denoise_deblur_visualization_export:
+    input:
+        qzv = os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qzv")
+    output:
+        directory(os.path.join(config["output"]["denoise"], "deblur/denoise_stats_qzv"))
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur_visualization_export.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur_visualization_export.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input.qzv} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 def gen_denoise_output():
     output = []
 
     dada2_output = [
         os.path.join(config["output"]["denoise"], "dada2/rep_seqs.qza"),
         os.path.join(config["output"]["denoise"], "dada2/rep_seqs_qza"),
+
         os.path.join(config["output"]["denoise"], "dada2/table.qza"),
         os.path.join(config["output"]["denoise"], "dada2/table_qza"),
+
         os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza"),
         os.path.join(config["output"]["denoise"], "dada2/denoise_stats_qza"),
-        os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qzv")
+
+        os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qzv"),
+        os.path.join(config["output"]["denoise"], "dada2/denoise_stats_qzv")
     ]
 
     deblur_output = [
         os.path.join(config["output"]["denoise"], "deblur/demux_filtered.qza"),
+
         os.path.join(config["output"]["denoise"], "deblur/demux_filtered_stats.qza"),
         os.path.join(config["output"]["denoise"], "deblur/demux_filtered_stats.qzv"),
+
         os.path.join(config["output"]["denoise"], "deblur/rep_seqs.qza"),
         os.path.join(config["output"]["denoise"], "deblur/rep_seqs_qza"),
+
         os.path.join(config["output"]["denoise"], "deblur/table.qza"),
         os.path.join(config["output"]["denoise"], "deblur/table_qza"),
+
         os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qza"),
         os.path.join(config["output"]["denoise"], "deblur/denoise_stats_qza"),
-        os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qzv")
+
+        os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qzv"),
+        os.path.join(config["output"]["denoise"], "deblur/denoise_stats_qzv"),
     ]
 
     if config["params"]["denoise"]["dada2"]["do"]:

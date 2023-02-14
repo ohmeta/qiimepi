@@ -11,9 +11,11 @@ import pandas as pd
 
 import ampi
 
+
 QIIME2_WF = [
     "qiime2_import_all",
     "qiime2_denoise_all",
+    "qiime2_feature_all",
     "qiime2_taxonomic_all",
     "all",
 ]
@@ -22,28 +24,29 @@ QIIME2_WF = [
 def run_snakemake(args, unknown, snakefile, workflow):
     conf = ampi.parse_yaml(args.config)
 
-    if not os.path.exists(conf["params"]["samples"]):
-        print("Please specific samples list on init step or change config.yaml manualy")
-        sys.exit(1)
-
     cmd = [
         "snakemake",
         "--snakefile",
         snakefile,
         "--configfile",
-        args.config
+        args.config,
+        "--cores",
+        str(args.cores),
+        "--until",
+        args.task
     ] + unknown
 
-    if args.conda_create_envs_only:
+    if "--touch" in unknown:
+        pass
+    elif args.conda_create_envs_only:
         cmd += ["--use-conda", "--conda-create-envs-only"]
+        if args.conda_prefix is not None:
+            cmd += ["--conda-prefix", args.conda_prefix]
     else:
         cmd += [
-            "--rerun-incomplete",
             "--keep-going",
             "--printshellcmds",
             "--reason",
-            "--until",
-            args.task
         ]
 
         if args.use_conda:
@@ -54,12 +57,18 @@ def run_snakemake(args, unknown, snakefile, workflow):
         if args.list:
             cmd += ["--list"]
         elif args.run_local:
-            cmd += ["--cores", str(args.cores)]
+            cmd += ["--local-cores", str(args.local_cores),
+                    "--jobs", str(args.jobs)]
         elif args.run_remote:
-            cmd += ["--profile", args.profile, "--local-cores", str(args.local_cores), "--jobs", str(args.jobs)]
+            cmd += ["--profile", args.profile,
+                    "--local-cores", str(args.local_cores),
+                    "--jobs", str(args.jobs)]
         elif args.debug:
-            cmd += ["--debug-dag", "--dry-run"]
-        elif args.dry_run:
+            cmd += ["--debug-dag"]
+        else:
+            cmd += ["--dry-run"]
+
+        if args.dry_run and ("--dry-run" not in cmd):
             cmd += ["--dry-run"]
 
     cmd_str = " ".join(cmd).strip()
@@ -74,6 +83,8 @@ def run_snakemake(args, unknown, snakefile, workflow):
         env=env,
     )
     proc.communicate()
+
+    print(f'''\nReal running cmd:\n{cmd_str}''')
 
 
 def init(args, unknown):

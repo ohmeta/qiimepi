@@ -58,7 +58,7 @@ output:
   tmp: "results/tmp"
   import: "results/00.import"
   denoise: "results/01.denoise"
-  taxonomic: "results/03.taxonomic"
+  taxonomic: "results/02.taxonomic"
 
 
 envs:
