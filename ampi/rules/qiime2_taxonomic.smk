@@ -44,12 +44,12 @@ rule qiime2_taxonomic_visualization:
         --o-visualization {output} \
         >{log} 2>&1
         '''
-
-
+ 
+        
 rule qiime2_taxonomic_barplot:
     input:
         metadata = config["params"]["metadata"],
-        table  = = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
+        table = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
         taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
     output:
         os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")
@@ -59,7 +59,6 @@ rule qiime2_taxonomic_barplot:
         os.path.join(config["output"]["taxonomic"], "logs/taxonomic_barplot_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
- 
     shell:
         '''
         qiime taxa barplot \

@@ -48,3 +48,10 @@ rule all:
         rules.qiime2_denoise_all.input,
         rules.qiime2_feature_all.input,
         rules.qiime2_taxonomic_all.input
+
+
+localrules:
+    qiime2_import_all,
+    qiime2_denoise_all,
+    qiime2_feature_all,
+    qiime2_taxonomic_all

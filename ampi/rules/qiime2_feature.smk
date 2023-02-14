@@ -22,9 +22,9 @@ rule qiime2_feature_table_summarize:
 
 rule qiime2_feature_table_tabulate:
     input:
-        qza = os.path.join(config["output"]["denoise"], "{denoiser}/rep-seqs.qza")
+        qza = os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qza")
     output:
-        qzv = os.path.join(config["output"]["denoise"], "{denoiser}/rep-seqs.qzv")
+        qzv = os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qzv")
     benchmark:
         os.path.join(config["output"]["denoise"], "logs/{denoiser}_feature_table_tabulate.benchmark.txt")
     log:
@@ -62,9 +62,9 @@ rule qiime2_feature_table_export:
 
 rule qiime2_feature_table_tabulate_export:
     input:
-        qzv = os.path.join(config["output"]["denoise"], "{denoiser}/rep-seqs.qzv")
+        qzv = os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qzv")
     output:
-        directory(os.path.join(config["output"]["denoise"], "{denoiser}/rep-seqs_qzv"))
+        directory(os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs_qzv"))
     benchmark:
         os.path.join(config["output"]["denoise"], "logs/{denoiser}_feature_table_tabulate_export.benchmark.txt")
     log:
@@ -81,9 +81,10 @@ rule qiime2_feature_table_tabulate_export:
 
 
 rule qiime2_feature_all:
+    input:
         expand([
             os.path.join(config["output"]["denoise"], "{denoiser}/table.qzv"),
-            os.path.join(config["output"]["denoise"], "{denoiser}/rep-seqs.qzv"),
+            os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qzv"),
             os.path.join(config["output"]["denoise"], "{denoiser}/table_qzv"),
-            os.path.join(config["output"]["denoise"], "{denoiser}/rep-seqs_qzv")],
+            os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs_qzv")],
             denoiser=DENOISER)
