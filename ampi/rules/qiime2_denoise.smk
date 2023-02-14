@@ -6,13 +6,15 @@ if reads_layout == "PE":
             rep_seq = os.path.join(config["output"]["denoise"], "dada2/rep_seqs.qza"),
             table = os.path.join(config["output"]["denoise"], "dada2/table.qza"),
             stats = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza")
+        benchmark:
+            os.path.join(config["output"]["denoise"], "logs/denoise_dada2.benchmark.txt")
+        log:
+            os.path.join(config["output"]["denoise"], "logs/denoise_dada2.log")
         params:
             trunc_len_f = config["params"]["denoise"]["dada2"]["paired"]["trunc_len_f"],
             trunc_len_r = config["params"]["denoise"]["dada2"]["paired"]["trunc_len_r"],
             trim_left_f = config["params"]["denoise"]["dada2"]["paired"]["trim_left_f"],
             trim_left_r = config["params"]["denoise"]["dada2"]["paired"]["trim_left_r"]
-        log:
-            os.path.join(config["output"]["denoise"], "logs/denoise_dada2.log")
         threads:
             config["params"]["denoise"]["threads"]
         conda:
@@ -29,7 +31,8 @@ if reads_layout == "PE":
             --o-table {output.table} \
             --o-denoising-stats {output.stats} \
             --verbose \
-            --p-n-threads {threads} > {log} 2>&1
+            --p-n-threads {threads} \
+            >{log} 2>&1
             '''
 
 else:
@@ -41,11 +44,13 @@ else:
             rep_seq = os.path.join(config["output"]["denoise"], "dada2/rep_seqs.qza"),
             table = os.path.join(config["output"]["denoise"], "dada2/table.qza"),
             stats = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza")
+        benchmark:
+            os.path.join(config["output"]["denoise"], "logs/denoise_dada2.benchmark.txt")
+        log:
+            os.path.join(config["output"]["denoise"], "logs/denoise_dada2.log")
         params:
             trunc_len = config["params"]["denoise"]["dada2"]["single"]["trunc_len"],
             trim_left = config["params"]["denoise"]["dada2"]["single"]["trim_left"]
-        log:
-            os.path.join(config["output"]["denoise"], "logs/denoise_dada2.log")
         threads:
             config["params"]["denoise"]["threads"]
         conda:
@@ -60,7 +65,8 @@ else:
             --o-table {output.table} \
             --o-denoising-stats {output.stats} \
             --verbose \
-            --p-n-threads {threads} > {log} 2>&1
+            --p-n-threads {threads} \
+            >{log} 2>&1
             '''
 
 
@@ -69,13 +75,18 @@ rule qiime2_denoise_dada2_visualization:
         stats = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qza")
     output:
         stats = os.path.join(config["output"]["denoise"], "dada2/denoise_stats.qzv")
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_dada2_visualization.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_dada2_visualization.log")
     conda:
         config["envs"]["qiime2"]
     shell:
         '''
         qiime metadata tabulate \
         --m-input-file {input.stats} \
-        --o-visualization {output.stats}
+        --o-visualization {output.stats} \
+        >{log} 2>&1
         '''
 
 
@@ -88,13 +99,17 @@ rule qiime2_denoise_dada2_export:
         rep_seq = directory(os.path.join(config["output"]["denoise"], "dada2/rep_seqs_qza")),
         table = directory(os.path.join(config["output"]["denoise"], "dada2/table_qza")),
         stats = directory(os.path.join(config["output"]["denoise"], "dada2/denoise_stats_qza"))
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_dada2_export.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_dada2_export.log")
     conda:
         config["envs"]["qiime2"]
     shell:
         '''
         qiime tools export \
         --input-path {input.stats} \
-        --output-path {output.stats}
+        --output-path {output.stats} >{log} 2>&1
 
         qiime tools export \
         --input-path {input.rep_seq} \
@@ -102,12 +117,12 @@ rule qiime2_denoise_dada2_export:
 
         qiime tools export \
         --input-path {input.table} \
-        --output-path {output.table}
+        --output-path {output.table} >>{log} 2>&1
 
         biom convert \
         -i {output.table}/feature-table.biom \
         -o {output.table}/feature-table.tsv \
-        --to-tsv
+        --to-tsv >>{log} 2>&1
         '''
 
 
@@ -120,24 +135,29 @@ rule qiime2_denoise_deblur:
         rep_seq = os.path.join(config["output"]["denoise"], "deblur/rep_seqs.qza"),
         table = os.path.join(config["output"]["denoise"], "deblur/table.qza"),
         stats = os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qza")
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur.log")
     params:
         trim_len = config["params"]["denoise"]["deblur"]["trim_len"],
         left_trim_len = config["params"]["denoise"]["deblur"]["left_trim_len"]
-    log:
-        os.path.join(config["output"]["denoise"], "logs/denoise_deblur.log")
     threads:
         config["params"]["denoise"]["threads"]
     conda:
         config["envs"]["qiime2"]
     shell:
         '''
-        echo "Running qiime quality-filter q-score" > {log} 2>&1
+        echo "Running qiime quality-filter q-score" >{log} 2>&1
+
         qiime quality-filter q-score \
         --i-demux {input} \
         --o-filtered-sequences {output.demux} \
-        --o-filter-stats {output.demux_stats} >> {log} 2>&1
+        --o-filter-stats {output.demux_stats} \
+        >>{log} 2>&1
 
-        echo "Running qiime deblur denoise-16S" >> {log} 2>&1
+        echo "Running qiime deblur denoise-16S" >>{log} 2>&1
+
         qiime deblur denoise-16S \
         --i-demultiplexed-seqs {output.demux} \
         --p-trim-length {params.trim_len} \
@@ -145,7 +165,8 @@ rule qiime2_denoise_deblur:
         --p-sample-stats \
         --o-representative-sequences {output.rep_seq} \
         --o-table {output.table} \
-        --o-stats {output.stats} >> {log} 2>& 1
+        --o-stats {output.stats} \
+        >>{log} 2>& 1
         '''
 
 
@@ -156,17 +177,23 @@ rule qiime2_denoise_deblur_visualization:
     output:
         demux_stats = os.path.join(config["output"]["denoise"], "deblur/demux_filtered_stats.qzv"),
         stats = os.path.join(config["output"]["denoise"], "deblur/denoise_stats.qzv")
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur_visualization.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur_visualization.log")
     conda:
         config["envs"]["qiime2"]
     shell:
         '''
         qiime metadata tabulate \
         --m-input-file {input.demux_stats} \
-        --o-visualization {output.demux_stats}
+        --o-visualization {output.demux_stats} \
+        >{log} 2>&1
 
         qiime deblur visualize-stats \
         --i-deblur-stats {input.stats} \
-        --o-visualization {output.stats}
+        --o-visualization {output.stats} \
+        >>{log} 2>&1
         '''
 
 
@@ -179,21 +206,28 @@ rule qiime2_denoise_deblur_export:
         rep_seq = directory(os.path.join(config["output"]["denoise"], "deblur/rep_seqs_qza")),
         table = directory(os.path.join(config["output"]["denoise"], "deblur/table_qza")),
         stats = directory(os.path.join(config["output"]["denoise"], "deblur/denoise_stats_qza"))
+    benchmark:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur_export.benchmark.txt")
+    log:
+        os.path.join(config["output"]["denoise"], "logs/denoise_deblur_export.log")
     conda:
         config["envs"]["qiime2"]
     shell:
         '''
         qiime tools export \
         --input-path {input.stats} \
-        --output-path {output.stats}
+        --output-path {output.stats} \
+        >{log} 2>&1
 
         qiime tools export \
         --input-path {input.rep_seq} \
-        --output-path {output.rep_seq}
+        --output-path {output.rep_seq} \
+        >>{log} 2>&1
 
         qiime tools export \
         --input-path {input.table} \
-        --output-path {output.table}
+        --output-path {output.table} \
+        >>{log} 2>&1
         '''
 
 
