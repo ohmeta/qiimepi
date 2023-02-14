@@ -1,12 +1,14 @@
-rule qiime2_taxonomic:
+rule qiime2_taxonomic_classification:
     input:
         rep_seq = os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qza")
     output:
         os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
-    params:
-        classifier = config["params"]["taxonomic"]["classifier"]
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_{denoiser}.benchmark.txt")
     log:
         os.path.join(config["output"]["taxonomic"], "logs/taxonomic_{denoiser}.log")
+    params:
+        classifier = config["params"]["taxonomic"]["classifier"]
     threads:
         config["params"]["taxonomic"]["threads"]
     conda:
@@ -24,7 +26,55 @@ rule qiime2_taxonomic:
         '''
 
 
+rule qiime2_taxonomic_visualization:
+    input:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+    output:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv")
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_visualization_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_visualization_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime metadata tabulate \
+        --m-input-file {input} \
+        --o-visualization {output} \
+        >{log} 2>&1
+        '''
+
+
+rule qiime2_taxonomic_barplot:
+    input:
+        metadata = config["params"]["metadata"],
+        table  = = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
+        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+    output:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_barplot_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_barplot_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+ 
+    shell:
+        '''
+        qiime taxa barplot \
+        --i-table {input.table} \
+        --i-taxonomy {input.taxonomy} \
+        --m-metadata-file {input.metadata} \
+        --o-visualization {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_taxonomic_all:
     input:
-        expand(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza"),
+        expand([
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")],
                denoiser=DENOISER)
