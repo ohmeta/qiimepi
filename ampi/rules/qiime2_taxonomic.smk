@@ -26,6 +26,26 @@ rule qiime2_taxonomic_classification:
         '''
 
 
+rule qiime2_taxonomic_classification_export:
+    input:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+    output:
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qza"))
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_classification_export_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_classification_export_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_taxonomic_visualization:
     input:
         os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
@@ -44,8 +64,28 @@ rule qiime2_taxonomic_visualization:
         --o-visualization {output} \
         >{log} 2>&1
         '''
- 
-        
+
+
+rule qiime2_taxonomic_visualization_export: 
+    input:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv")
+    output:
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qzv"))
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_visualization_export_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_visualization_export_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_taxonomic_barplot:
     input:
         metadata = config["params"]["metadata"],
@@ -70,10 +110,33 @@ rule qiime2_taxonomic_barplot:
         '''
 
 
+rule qiime2_taxonomic_barplot_export:
+    input:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")
+    output:
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot_qzv"))
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_barplot_export_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_barplot_export_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_taxonomic_all:
     input:
         expand([
             os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qza"),
             os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")],
-               denoiser=DENOISER)
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot_qzv")],
+            denoiser=DENOISER)
