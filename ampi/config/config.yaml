@@ -53,12 +53,17 @@ params:
                 # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-classifier.qza
                 # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza
 
+  phylotree:
+    threads: 8
+    sepp_db: /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/sepp_reference_databases/sepp-refs-silva-128.qza
+
 
 output:
   tmp: "results/tmp"
   import: "results/00.import"
   denoise: "results/01.denoise"
   taxonomic: "results/02.taxonomic"
+  phylotree: "results/03.phylotree"
 
 
 envs:
