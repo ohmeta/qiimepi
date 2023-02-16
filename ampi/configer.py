@@ -31,7 +31,28 @@ class ampconfig:
     sub_dirs = [
         "envs",
         "profiles",
-        "results"
+        "results",
+        "logs/00.qiime2_import",
+        "logs/00.qiime2_import_summarize",
+        "logs/00.qiime2_import_summarize_export",
+        "logs/01.qiime2_denoise_dada2",
+        "logs/01.qiime2_denoise_dada2_visualization",
+        "logs/01.qiime2_denoise_dada2_export",
+        "logs/01.qiime2_denoise_dada2_visualization_export",
+        "logs/01.qiime2_denoise_deblur",
+        "logs/01.qiime2_denoise_deblur_visualization",
+        "logs/01.qiime2_denoise_deblur_export",
+        "logs/01.qiime2_denoise_deblur_visualization_export",
+        "logs/02.qiime2_feature_table_summarize",
+        "logs/03.qiime2_feature_table_tabulate",
+        "logs/03.qiime2_feature_table_export",
+        "logs/03.qiime2_feature_table_tabulate_export",
+        "logs/03.qiime2_taxonomic_classification",
+        "logs/03.qiime2_taxonomic_classification_export",
+        "logs/03.qiime2_taxonomic_visualization",
+        "logs/03.qiime2_taxonomic_visualization_export",
+        "logs/03.qiime2_taxonomic_barplot",
+        "logs/03.qiime2_taxonomic_barplot_export"
         ]
 
     def __init__(self, work_dir):
