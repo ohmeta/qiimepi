@@ -17,7 +17,7 @@ QIIME2_WF = [
     "qiime2_denoise_all",
     "qiime2_feature_all",
     "qiime2_taxonomic_all",
-    "qiime2_phylotree_all"
+    "qiime2_phylotree_all",
     "all",
 ]
 
