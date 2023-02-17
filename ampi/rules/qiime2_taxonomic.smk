@@ -146,7 +146,7 @@ rule qiime2_taxonomic_krona:
         '''
         qiime krona collapse-and-plot \
         --i-table {input.table} \
-        --i-taxonomy {input.taxonomy} \ 
+        --i-taxonomy {input.taxonomy} \
         --o-krona-plot {output.qzv} \
         >{log} 2>&1
         '''
