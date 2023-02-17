@@ -130,6 +130,48 @@ rule qiime2_taxonomic_barplot_export:
         '''
 
 
+rule qiime2_taxonomic_krona:
+    input:
+        table = os.path.join(config["output"]["denoise"], "dada2/table.qza"),
+        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+    output:
+        qzv = os.path.join(config["output"]["taxonomic"], "{denoiser}/krona.qzv")
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_krona_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_krona_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime krona collapse-and-plot \
+        --i-table {input.table} \
+        --i-taxonomy {input.taxonomy} \ 
+        --okrona-plot {output.qzv} \
+        >{log} 2>&1
+        '''
+
+
+rule qiime2_taxonomic_krona_export:
+    input:
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/krona.qzv")
+    output:
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/krona_qzv"))
+    benchmark:
+        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_krona_export_{denoiser}.benchmark.txt")
+    log:
+        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_krona_export_{denoiser}.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_taxonomic_all:
     input:
         expand([
@@ -138,5 +180,7 @@ rule qiime2_taxonomic_all:
             os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv"),
             os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qzv"),
             os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot_qzv")],
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot_qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/krona.qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/krona_qzv")],
             denoiser=DENOISER)

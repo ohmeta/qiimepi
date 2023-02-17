@@ -675,3 +675,7 @@ dependencies:
   - zlib=1.2.13
   - zstandard=0.19.0
   - zstd=1.5.2
+  - krona
+  - pip
+  - pip:
+     - git+https://github.com/kaanb93/q2-krona.git

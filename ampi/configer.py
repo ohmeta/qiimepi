@@ -53,6 +53,8 @@ class ampconfig:
         "logs/02.qiime2_taxonomic_visualization_export",
         "logs/02.qiime2_taxonomic_barplot",
         "logs/02.qiime2_taxonomic_barplot_export",
+        "logs/02.qiime2_taxonomic_krona",
+        "logs/02.qiime2_taxonomic_krona_export",
         "logs/03.qiime2_phylotree",
         "logs/03.qiime2_phylotree_export"
         ]
