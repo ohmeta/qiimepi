@@ -110,6 +110,52 @@ rule qiime2_phylotree_align_export:
         '''
 
 
+rule qiime2_phylotree_align_visualization:
+    input:
+        metadata = config["params"]["metadata"],
+        table = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
+        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza"),
+        tree_rooted = os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree.qza")
+    output:
+        qzv = os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv")
+    benchmark:
+        os.path.join(config["output"]["phylotree"], "benchmark/{denoiser}_phylogenetic_tree_align_visualization.benchmark.txt")
+    log:
+        os.path.join(config["output"]["phylotree"], "logs/{denoiser}_phylogenetic_tree_align_visualization.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime empress community-plot \
+        --i-tree {input.tree_rooted} \
+        --i-feature-table {input.table} \
+        --m-sample-metadata-file {input.metadata} \
+        --m-feature-metadata-file {input.taxonomy} \
+        --o-visualization {output.qzv} \
+        >{log} 2>&1
+        '''
+
+
+rule qiime2_phylotree_align_visualization_export:
+    input:
+        os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv")
+    output:
+        directory(os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree_qzv"))
+    benchmark:
+        os.path.join(config["output"]["phylotree"], "benchmark/{denoiser}_phylogenetic_tree_align_visualization_export.benchmark.txt")
+    log:
+        os.path.join(config["output"]["phylotree"], "logs/{denoiser}_phylogenetic_tree_align_visualization_export.log")
+    conda:
+        config["envs"]["qiime2"]
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input} \
+        --output-path {output} \
+        >{log} 2>&1
+        '''
+
+
 rule qiime2_phylotree_all:
     input:
         expand([
@@ -124,5 +170,8 @@ rule qiime2_phylotree_all:
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/masked_alignment.qza"),
 
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree_qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree_qza")],
+            os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree_qza"),
+            
+            os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv"),
+            os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree_qzv")],
             denoiser=DENOISER)

@@ -679,3 +679,4 @@ dependencies:
   - pip
   - pip:
      - git+https://github.com/kaanb93/q2-krona.git
+     - empress

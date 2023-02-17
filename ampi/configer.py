@@ -55,8 +55,12 @@ class ampconfig:
         "logs/02.qiime2_taxonomic_barplot_export",
         "logs/02.qiime2_taxonomic_krona",
         "logs/02.qiime2_taxonomic_krona_export",
-        "logs/03.qiime2_phylotree",
-        "logs/03.qiime2_phylotree_export"
+        "logs/03.qiime2_phylotree_sepp",
+        "logs/03.qiime2_phylotree_sepp_export"
+        "logs/03.qiime2_phylotree_align",
+        "logs/03.qiime2_phylotree_align_export"
+        "logs/03.qiime2_phylotree_align_visualization",
+        "logs/03.qiime2_phylotree_align_visualization_export"
         ]
 
     def __init__(self, work_dir):
