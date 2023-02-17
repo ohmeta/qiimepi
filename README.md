@@ -1,6 +1,6 @@
 # Amplicon analysis pipeline
 
-<div align=center><img width="500" height="280" src="docs/dag.svg"/></div>
+<div align=center><img width="1000" height="150" src="docs/dag.svg"/></div>
 
 
 ## Installation
@@ -106,6 +106,7 @@ samples.miseq_sop.tsv
 
 params:
   samples: "samples.tsv"
+  metadata: "samples_metadata.tsv"
 
   # https://docs.qiime2.org/2021.11/tutorials/importing/
   import:
@@ -128,14 +129,13 @@ params:
     # BIOMV100Format
     # BIOMV210Format
 
-
   denoise:
     threads: 8
     dada2:
       do: True
       paired:
-        trunc_len_f: 280 # change to 240
-        trunc_len_r: 250 # change to 160
+        trunc_len_f: 280
+        trunc_len_r: 250
         trim_left_f: 0
         trim_left_r: 0
       single:
@@ -145,7 +145,6 @@ params:
       do: False
       trim_len: 280
       left_trim_len: 0
-
 
   taxonomic:
     threads: 8
@@ -158,36 +157,66 @@ params:
                 # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-classifier.qza
                 # /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza
 
+  phylotree:
+    threads: 8
+    sepp_db: /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/sepp_reference_databases/sepp-refs-silva-128.qza
+
+  function:
+    threads: 8
+
 
 output:
   tmp: "results/tmp"
   import: "results/00.import"
   denoise: "results/01.denoise"
-  taxonomic: "results/03.taxonomic"
+  taxonomic: "results/02.taxonomic"
+  phylotree: "results/03.phylotree"
+  function: "results/04.function"
 
 
 envs:
   qiime2: "envs/qiime2.yaml"
+  picrust2: "envs/picrust2.yaml"
 ```
 
 ### Step 5: Dry run qiime2_wf
 
 ```bash
 ➤ python /path/to/ampi/run_ampi.py \
-  qiime2_wf all --dry-run
+  qiime2_wf all --use-conda --dry-run
 
 Job stats:
-job                                   count    min threads    max threads
-----------------------------------  -------  -------------  -------------
-all                                       1              1              1
-qiime2_denoise_dada2                      1              1              1
-qiime2_denoise_dada2_export               1              1              1
-qiime2_denoise_dada2_visualization        1              1              1
-qiime2_import                             1              1              1
-qiime2_import_summarize                   1              1              1
-qiime2_import_summarize_export            1              1              1
-qiime2_taxonomic                          1              1              1
-total                                     8              1              1
+job                                            count    min threads    max threads
+-------------------------------------------  -------  -------------  -------------
+all                                                1              1              1
+qiime2_denoise_dada2                               1              8              8
+qiime2_denoise_dada2_export                        1              1              1
+qiime2_denoise_dada2_visualization                 1              1              1
+qiime2_denoise_dada2_visualization_export          1              1              1
+qiime2_feature_table_export                        1              1              1
+qiime2_feature_table_summarize                     1              1              1
+qiime2_feature_table_tabulate                      1              1              1
+qiime2_feature_table_tabulate_export               1              1              1
+qiime2_function_picrust2                           1              8              8
+qiime2_function_picrust2_add_descriptions          1              1              1
+qiime2_import                                      1              1              1
+qiime2_import_summarize                            1              1              1
+qiime2_import_summarize_export                     1              1              1
+qiime2_phylotree_align                             1              8              8
+qiime2_phylotree_align_export                      1              1              1
+qiime2_phylotree_align_visualization               1              1              1
+qiime2_phylotree_align_visualization_export        1              1              1
+qiime2_phylotree_sepp                              1              8              8
+qiime2_phylotree_sepp_export                       1              1              1
+qiime2_taxonomic_barplot                           1              1              1
+qiime2_taxonomic_barplot_export                    1              1              1
+qiime2_taxonomic_classification                    1              8              8
+qiime2_taxonomic_classification_export             1              1              1
+qiime2_taxonomic_krona                             1              1              1
+qiime2_taxonomic_krona_export                      1              1              1
+qiime2_taxonomic_visualization                     1              1              1
+qiime2_taxonomic_visualization_export              1              1              1
+total                                             28              1              8
 ```
 
 ### Step 6: Wet run qiime2_wf
@@ -206,68 +235,6 @@ total                                     8              1              1
 ```bash
 ➤ tree results
 
-results/
-├── 00.import
-│   ├── demux.qza
-│   ├── demux.qzv
-│   ├── demux_qzv
-│   │   ├── data.jsonp
-│   │   ├── demultiplex-summary-forward.pdf
-│   │   ├── demultiplex-summary-forward.png
-│   │   ├── demultiplex-summary-reverse.pdf
-│   │   ├── demultiplex-summary-reverse.png
-│   │   ├── dist
-│   │   │   ├── bundle.js
-│   │   │   ├── d3-license.txt
-│   │   │   └── vendor.bundle.js
-│   │   ├── forward-seven-number-summaries.tsv
-│   │   ├── index.html
-│   │   ├── overview.html
-│   │   ├── per-sample-fastq-counts.tsv
-│   │   ├── q2templateassets
-│   │   │   ├── css
-│   │   │   │   ├── base-template.css
-│   │   │   │   ├── bootstrap.min.css
-│   │   │   │   ├── normalize.css
-│   │   │   │   └── tab-parent.css
-│   │   │   ├── fonts
-│   │   │   │   ├── glyphicons-halflings-regular.eot
-│   │   │   │   ├── glyphicons-halflings-regular.svg
-│   │   │   │   ├── glyphicons-halflings-regular.ttf
-│   │   │   │   ├── glyphicons-halflings-regular.woff
-│   │   │   │   └── glyphicons-halflings-regular.woff2
-│   │   │   ├── img
-│   │   │   │   └── qiime2-rect-200.png
-│   │   │   └── js
-│   │   │       ├── bootstrap.min.js
-│   │   │       ├── child.js
-│   │   │       ├── jquery-3.2.0.min.js
-│   │   │       └── parent.js
-│   │   ├── quality-plot.html
-│   │   └── reverse-seven-number-summaries.tsv
-│   └── logs
-│       └── qiime_import.log
-├── 01.denoise
-│   ├── dada2
-│   │   ├── denoise_stats.qza
-│   │   ├── denoise_stats_qza
-│   │   │   └── stats.tsv
-│   │   ├── denoise_stats.qzv
-│   │   ├── rep_seqs.qza
-│   │   ├── rep_seqs_qza
-│   │   │   └── dna-sequences.fasta
-│   │   ├── table.qza
-│   │   └── table_qza
-│   │       ├── feature-table.biom
-│   │       └── feature-table.tsv
-│   └── logs
-│       └── denoise_dada2.log
-│       └── taxonomic_dada2.log
-└── 03.taxonomic
-    ├── dada2
-    │   └── taxonomy.qza
-    └── logs
-        └── taxonomic_dada2.log
 ```
 
 ## Note
@@ -302,3 +269,8 @@ Phred Score table
 - [Weighted Silva 138 99% OTUs full-length sequences](https://data.qiime2.org/2022.11/common/silva-138-99-nb-weighted-classifier.qza)
 - [Weighted Greengenes 13_8 99% OTUs full-length sequences](https://data.qiime2.org/2022.11/common/gg-13-8-99-nb-weighted-classifier.qza)
 - [Weighted Greengenes 13_8 99% OTUs from 515F/806R region of sequences](https://data.qiime2.org/2022.11/common/gg-13-8-99-515-806-nb-weighted-classifier.qza)
+
+#### SEPP reference databases
+
+- [Silva 128 SEPP reference database](https://data.qiime2.org/2022.11/common/sepp-refs-silva-128.qza)
+- [Greengenes 13_8 SEPP reference database](https://data.qiime2.org/2022.11/common/sepp-refs-gg-13-8.qza)
