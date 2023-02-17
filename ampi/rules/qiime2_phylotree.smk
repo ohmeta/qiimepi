@@ -31,12 +31,14 @@ rule qiime2_phylotree_export:
         tree = os.path.join(config["output"]["phylotree"], "{denoiser}/tree.qza"),
         placements = os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements.qza")
     output:
-        tree = directory(os.path.join(config["output"]["phylotree"], "{denoiser}/tree.qza")),
-        placements = directory(os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements.qza"))
+        tree = directory(os.path.join(config["output"]["phylotree"], "{denoiser}/tree_qza")),
+        placements = directory(os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements_qza"))
     benchmark:
         os.path.join(config["output"]["phylotree"], "benchmark/{denoiser}_phylogenetic_tree_export.benchmark.txt")
     log:
         os.path.join(config["output"]["phylotree"], "logs/{denoiser}_phylogenetic_tree_export.log")
+    conda:
+        config["envs"]["qiime2"]
     shell:
         '''
         qiime tools export \
