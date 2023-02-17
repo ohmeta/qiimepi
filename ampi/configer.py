@@ -60,7 +60,9 @@ class ampconfig:
         "logs/03.qiime2_phylotree_align",
         "logs/03.qiime2_phylotree_align_export"
         "logs/03.qiime2_phylotree_align_visualization",
-        "logs/03.qiime2_phylotree_align_visualization_export"
+        "logs/03.qiime2_phylotree_align_visualization_export",
+        "logs/04.qiime2_function_picrust2",
+        "logs/04.qiime2_function_picrust2_add_descriptions",
         ]
 
     def __init__(self, work_dir):

@@ -41,6 +41,7 @@ include: "../rules/qiime2_denoise.smk"
 include: "../rules/qiime2_feature.smk"
 include: "../rules/qiime2_taxonomic.smk"
 include: "../rules/qiime2_phylotree.smk"
+include: "../rules/qiime2_function.smk"
 
 
 rule all:
@@ -49,7 +50,8 @@ rule all:
         rules.qiime2_denoise_all.input,
         rules.qiime2_feature_all.input,
         rules.qiime2_taxonomic_all.input,
-        rules.qiime2_phylotree_all.input
+        rules.qiime2_phylotree_all.input,
+        rules.qiime2_function_all.input
 
 
 localrules:
@@ -57,4 +59,5 @@ localrules:
     qiime2_denoise_all,
     qiime2_feature_all,
     qiime2_taxonomic_all,
-    qiime2_phylotree_all
+    qiime2_phylotree_all,
+    qiime2_function_all

@@ -18,6 +18,7 @@ QIIME2_WF = [
     "qiime2_feature_all",
     "qiime2_taxonomic_all",
     "qiime2_phylotree_all",
+    "qiime2_function_all",
     "all",
 ]
 

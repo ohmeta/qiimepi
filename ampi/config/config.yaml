@@ -55,6 +55,9 @@ params:
     threads: 8
     sepp_db: /home/jiezhu/databases/ecogenomics/QIIME2/2022.11/sepp_reference_databases/sepp-refs-silva-128.qza
 
+  function:
+    threads: 8
+
 
 output:
   tmp: "results/tmp"
@@ -62,7 +65,9 @@ output:
   denoise: "results/01.denoise"
   taxonomic: "results/02.taxonomic"
   phylotree: "results/03.phylotree"
+  function: "results/04.function"
 
 
 envs:
   qiime2: "envs/qiime2.yaml"
+  picrust2: "envs/picrust2.yaml"
