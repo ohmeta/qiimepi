@@ -23,7 +23,6 @@ params:
     # BIOMV100Format
     # BIOMV210Format
 
-
   denoise:
     threads: 8
     dada2:
@@ -40,7 +39,6 @@ params:
       do: False
       trim_len: 280
       left_trim_len: 0
-
 
   taxonomic:
     threads: 8
