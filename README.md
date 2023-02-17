@@ -235,6 +235,78 @@ total                                             28              1             
 ```bash
 ➤ tree results
 
+results/
+├── 00.import
+│   ├── demux.qza
+│   └── demux.qzv 
+├── 01.denoise
+│   ├── dada2
+│   │   ├── denoise_stats.qza
+│   │   ├── denoise_stats_qza
+│   │   │   └── stats.tsv
+│   │   ├── denoise_stats.qzv
+│   │   ├── rep_seqs.qza
+│   │   ├── rep_seqs_qza
+│   │   │   └── dna-sequences.fasta
+│   │   ├── rep_seqs.qzv
+│   │   ├── table.qza
+│   │   ├── table_qza
+│   │   │   ├── feature-table.biom
+│   │   │   └── feature-table.tsv
+│   │   └── table.qzv
+├── 02.taxonomic
+│   ├── dada2
+│   │   ├── krona.qzv
+│   │   ├── taxonomy_barplot.qzv
+│   │   ├── taxonomy.qza
+│   │   ├── taxonomy_qza
+│   │   │   └── taxonomy.tsv
+│   │   └── taxonomy.qzv
+├── 03.phylotree
+│   ├── dada2
+│   │   ├── align
+│   │   │   ├── alignment.qza
+│   │   │   ├── empress_tree.qzv
+│   │   │   ├── masked_alignment.qza
+│   │   │   ├── rooted_tree.qza
+│   │   │   ├── rooted_tree_qza
+│   │   │   │   └── tree.nwk
+│   │   │   ├── tree.qza
+│   │   │   └── tree_qza
+│   │   │       └── tree.nwk
+│   │   └── sepp
+│   │       ├── tree_placements.qza
+│   │       ├── tree_placements_qza
+│   │       │   └── placements.json
+│   │       ├── tree.qza
+│   │       └── tree_qza
+│   │           └── tree.nwk
+├── 04.function
+│   ├── dada2
+│   │   └── picrust2
+│   │       ├── done
+│   │       ├── done_description
+│   │       ├── EC_metagenome_out
+│   │       │   ├── pred_metagenome_contrib.tsv.gz
+│   │       │   ├── pred_metagenome_unstrat_descrip.tsv.gz
+│   │       │   ├── pred_metagenome_unstrat.tsv.gz
+│   │       │   ├── seqtab_norm.tsv.gz
+│   │       │   └── weighted_nsti.tsv.gz
+│   │       ├── EC_predicted.tsv.gz
+│   │       ├── KO_metagenome_out
+│   │       │   ├── pred_metagenome_contrib.tsv.gz
+│   │       │   ├── pred_metagenome_unstrat_descrip.tsv.gz
+│   │       │   ├── pred_metagenome_unstrat.tsv.gz
+│   │       │   ├── seqtab_norm.tsv.gz
+│   │       │   └── weighted_nsti.tsv.gz
+│   │       ├── KO_predicted.tsv.gz
+│   │       ├── marker_predicted_and_nsti.tsv.gz
+│   │       ├── out.tre
+│   │       └── pathways_out
+│   │           ├── path_abun_contrib.tsv.gz
+│   │           ├── path_abun_unstrat_descrip.tsv.gz
+│   │           └── path_abun_unstrat.tsv.gz
+
 ```
 
 ## Note
