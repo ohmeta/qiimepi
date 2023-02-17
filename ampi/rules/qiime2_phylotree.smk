@@ -26,9 +26,36 @@ rule qiime2_phylotree:
         '''
 
 
+rule qiime2_phylotree_export:
+    input:
+        tree = os.path.join(config["output"]["phylotree"], "{denoiser}/tree.qza"),
+        placements = os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements.qza")
+    output:
+        tree = directory(os.path.join(config["output"]["phylotree"], "{denoiser}/tree.qza")),
+        placements = directory(os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements.qza"))
+    benchmark:
+        os.path.join(config["output"]["phylotree"], "benchmark/{denoiser}_phylogenetic_tree_export.benchmark.txt")
+    log:
+        os.path.join(config["output"]["phylotree"], "logs/{denoiser}_phylogenetic_tree_export.log")
+    shell:
+        '''
+        qiime tools export \
+        --input-path {input.tree} \
+        --output-path {output.tree} \
+        >{log} 2>&1
+
+        qiime tools export \
+        --input-path {input.placements} \
+        --output-path {output.placements} \
+        >>{log} 2>&1
+        '''
+
+
 rule qiime2_phylotree_all:
     input:
         expand([
             os.path.join(config["output"]["phylotree"], "{denoiser}/tree.qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements.qza")],
+            os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements.qza"),
+            os.path.join(config["output"]["phylotree"], "{denoiser}/tree_qza"),
+            os.path.join(config["output"]["phylotree"], "{denoiser}/tree_placements_qza")],
             denoiser=DENOISER)
