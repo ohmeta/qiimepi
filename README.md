@@ -56,7 +56,7 @@ available subcommands:
     qiime2_wf    amplicon data analysis pipeline using QIIME2
 ```
 
-## Real word
+## Real world
 
 ### Step_0: Activate conda environment
 
