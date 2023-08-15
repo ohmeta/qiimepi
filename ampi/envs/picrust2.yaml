@@ -3,4 +3,4 @@ channels:
 - bioconda
 - defaults
 dependencies:
-- picrust2=2.5.1
+- picrust2=2.5.2
