@@ -66,7 +66,7 @@ rule qiime2_taxonomic_visualization:
         '''
 
 
-rule qiime2_taxonomic_visualization_export: 
+rule qiime2_taxonomic_visualization_export:
     input:
         os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv")
     output:

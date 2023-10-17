@@ -2,12 +2,14 @@
 
 import sys
 import os
-import ampi
+
 import pandas as pd
+
+import qiimepi
 
 shell.executable("bash")
 
-AMPI_DIR = ampi.__path__[0]
+QIIMEPI_DIR = qiimepi.__path__[0]
 
 
 reads_layout = "PE"
@@ -16,7 +18,7 @@ if "Paired" in config["params"]["import"]["type"]:
 else:
     reads_layout = "SE"
 
-SAMPLES = ampi.parse_samples(config["params"]["samples"], reads_layout, True)
+SAMPLES = qiimepi.parse_samples(config["params"]["samples"], reads_layout, True)
 
 #READS_FORMAT = "sra" \
 #    if "sra" in SAMPLES.columns \

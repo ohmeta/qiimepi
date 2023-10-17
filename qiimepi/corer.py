@@ -9,10 +9,10 @@ from io import StringIO
 
 import pandas as pd
 
-import ampi
+import qiimepi
 
 
-QIIME2_WF = [
+AMPLICON_WF = [
     "qiime2_import_all",
     "qiime2_denoise_all",
     "qiime2_feature_all",
@@ -24,7 +24,7 @@ QIIME2_WF = [
 
 
 def run_snakemake(args, unknown, snakefile, workflow):
-    conf = ampi.parse_yaml(args.config)
+    conf = qiimepi.parse_yaml(args.config)
 
     if not os.path.exists(conf["params"]["samples"]):
         print("Please specific samples list on init step or change config.yaml manualy")
@@ -80,7 +80,7 @@ def run_snakemake(args, unknown, snakefile, workflow):
             cmd += ["--dry-run"]
 
     cmd_str = " ".join(cmd).strip()
-    print("Running ampi %s:\n%s" % (workflow, cmd_str))
+    print("Running qiimepi %s:\n%s" % (workflow, cmd_str))
 
     env = os.environ.copy()
     proc = subprocess.Popen(
@@ -97,7 +97,7 @@ def run_snakemake(args, unknown, snakefile, workflow):
 
 def init(args, unknown):
     if args.workdir:
-        project = ampi.ampconfig(args.workdir)
+        project = qiimepi.qiimepi_config(args.workdir)
         print(project.__str__())
         project.create_dirs()
         conf = project.get_config()
@@ -113,7 +113,7 @@ def init(args, unknown):
             print("Please supply samples table")
             sys.exit(-1)
 
-        ampi.update_config(
+        qiimepi.update_config(
             project.config_file, project.new_config_file, conf, remove=False
         )
     else:
@@ -121,9 +121,9 @@ def init(args, unknown):
         sys.exit(-1)
 
 
-def qiime2_wf(args, unknown):
-    snakefile = os.path.join(os.path.dirname(__file__), "snakefiles/qiime2_wf.smk")
-    run_snakemake(args, unknown, snakefile, "qiime2_wf")
+def amplicon_wf(args, unknown):
+    snakefile = os.path.join(os.path.dirname(__file__), "snakefiles/amplicon_wf.smk")
+    run_snakemake(args, unknown, snakefile, "amplicon_wf")
 
 
 def snakemake_summary(snakefile, configfile, task):
@@ -145,23 +145,30 @@ def snakemake_summary(snakefile, configfile, task):
 def main():
     banner = """
 
-        ░█████╗░███╗░░░███╗██████╗░██╗
-        ██╔══██╗████╗░████║██╔══██╗██║
-        ███████║██╔████╔██║██████╔╝██║
-        ██╔══██║██║╚██╔╝██║██╔═══╝░██║
-        ██║░░██║██║░╚═╝░██║██║░░░░░██║
-        ╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝
+████████████████████████████████████████████████████████████████████████████████████████████████████████
+█░░░░░░░░░░░░░░███░░░░░░░░░░█░░░░░░░░░░█░░░░░░██████████░░░░░░█░░░░░░░░░░░░░░█░░░░░░░░░░░░░░█░░░░░░░░░░█
+█░░▄▀▄▀▄▀▄▀▄▀░░███░░▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀░░░░░░░░░░░░░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█
+█░░▄▀░░░░░░▄▀░░███░░░░▄▀░░░░█░░░░▄▀░░░░█░░▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░▄▀░░█░░░░▄▀░░░░█
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░░░░░▄▀░░░░░░▄▀░░█░░▄▀░░█████████░░▄▀░░██░░▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░▄▀░░██░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░▄▀░░██░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░░░░░██░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░░░░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██████████░░▄▀░░█░░▄▀░░█████████░░▄▀░░███████████░░▄▀░░███
+█░░▄▀░░░░░░▄▀░░░░█░░░░▄▀░░░░█░░░░▄▀░░░░█░░▄▀░░██████████░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░█████████░░░░▄▀░░░░█
+█░░▄▀▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀░░██████████░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀░░█████████░░▄▀▄▀▄▀░░█
+█░░░░░░░░░░░░░░░░█░░░░░░░░░░█░░░░░░░░░░█░░░░░░██████████░░░░░░█░░░░░░░░░░░░░░█░░░░░░█████████░░░░░░░░░░█
+████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-      Omics for All, Open Source for All
+                            Omics for All, Open Source for All
 
-      Amplicon sequence analysis pipeline
+                        Quantitative Insights Into Microbial Ecology
 
 """
 
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(banner),
-        prog="ampi",
+        prog="qiimepi",
     )
     parser.add_argument(
         "-v",
@@ -276,16 +283,16 @@ def main():
     subparsers = parser.add_subparsers(title="available subcommands", metavar="")
     parser_init = subparsers.add_parser(
         "init",
-        formatter_class=ampi.custom_help_formatter,
+        formatter_class=qiimepi.custom_help_formatter,
         parents=[common_parser],
-        prog="ampi init",
+        prog="qiimepi init",
         help="init project",
     )
-    parser_qiime2_wf = subparsers.add_parser(
-        "qiime2_wf",
-        formatter_class=ampi.custom_help_formatter,
+    parser_amplicon_wf = subparsers.add_parser(
+        "amplicon_wf",
+        formatter_class=qiimepi.custom_help_formatter,
         parents=[common_parser, run_parser],
-        prog="ampi qiime2_wf",
+        prog="qiimepi amplicon_wf",
         help="amplicon data analysis pipeline using QIIME2",
     )
 
@@ -304,22 +311,22 @@ samples list, tsv format required.
     )
     parser_init.set_defaults(func=init)
 
-    parser_qiime2_wf.add_argument(
+    parser_amplicon_wf.add_argument(
         "task",
         metavar="TASK",
         nargs="?",
         type=str,
         default="all",
-        choices=QIIME2_WF,
-        help="pipeline end point. Allowed values are " + ", ".join(QIIME2_WF),
+        choices=AMPLICON_WF,
+        help="pipeline end point. Allowed values are " + ", ".join(AMPLICON_WF),
     )
-    parser_qiime2_wf.set_defaults(func=qiime2_wf)
+    parser_amplicon_wf.set_defaults(func=amplicon_wf)
 
     args, unknown = parser.parse_known_args()
 
     try:
         if args.version:
-            print("ampi version %s" % ampi.__version__)
+            print("qiimepi version %s" % qiimepi.__version__)
             sys.exit(0)
         args.func(args, unknown)
     except AttributeError as e:

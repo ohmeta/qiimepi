@@ -20,10 +20,10 @@
 ➤ conda install -c bioconda -c conda-forge snakemake fd-find seqkit
 ```
 
-### Set PYTHONPATH for ampi
+### Set PYTHONPATH for qiimepi
 
 ```bash
-➤ echo "export PYTHONPATH=/path/to/ampi:$PYTHONPATH" >> ~/.bashrc
+➤ echo "export PYTHONPATH=/path/to/qiimepi:$PYTHONPATH" >> ~/.bashrc
 # relogin
 ```
 
@@ -31,29 +31,36 @@
 
 ```bash
 ➤ conda activate mambaforge
-➤ python /path/to/ampi/run_ampi.py --help
+➤ python /path/to/qiimepi/run_qiimepi.py --help
 
-usage: ampi [-h] [-v]  ...
+usage: qiimepi [-h] [-v]  ...
 
-  ░█████╗░███╗░░░███╗██████╗░██╗
-  ██╔══██╗████╗░████║██╔══██╗██║
-  ███████║██╔████╔██║██████╔╝██║
-  ██╔══██║██║╚██╔╝██║██╔═══╝░██║
-  ██║░░██║██║░╚═╝░██║██║░░░░░██║
-  ╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝
+████████████████████████████████████████████████████████████████████████████████████████████████████████
+█░░░░░░░░░░░░░░███░░░░░░░░░░█░░░░░░░░░░█░░░░░░██████████░░░░░░█░░░░░░░░░░░░░░█░░░░░░░░░░░░░░█░░░░░░░░░░█
+█░░▄▀▄▀▄▀▄▀▄▀░░███░░▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀░░░░░░░░░░░░░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█
+█░░▄▀░░░░░░▄▀░░███░░░░▄▀░░░░█░░░░▄▀░░░░█░░▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░▄▀░░█░░░░▄▀░░░░█
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░░░░░▄▀░░░░░░▄▀░░█░░▄▀░░█████████░░▄▀░░██░░▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░▄▀░░██░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░▄▀░░██░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░░░░░██░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░░░░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██████████░░▄▀░░█░░▄▀░░█████████░░▄▀░░███████████░░▄▀░░███
+█░░▄▀░░░░░░▄▀░░░░█░░░░▄▀░░░░█░░░░▄▀░░░░█░░▄▀░░██████████░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░█████████░░░░▄▀░░░░█
+█░░▄▀▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀░░██████████░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀░░█████████░░▄▀▄▀▄▀░░█
+█░░░░░░░░░░░░░░░░█░░░░░░░░░░█░░░░░░░░░░█░░░░░░██████████░░░░░░█░░░░░░░░░░░░░░█░░░░░░█████████░░░░░░░░░░█
+████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-Omics for All, Open Source for All
+                                Omics for All, Open Source for All
 
-Amplicon sequence analysis pipeline
+                            Quantitative Insights Into Microbial Ecology
 
 optional arguments:
   -h, --help     show this help message and exit
   -v, --version  print software version and exit
 
 available subcommands:
-  
-    init         init project
-    qiime2_wf    amplicon data analysis pipeline using QIIME2
+
+    init           init project
+    amplicon_wf    amplicon data analysis pipeline using QIIME2
 ```
 
 ## Real world
@@ -89,7 +96,7 @@ available subcommands:
 
 ```bash
 ➤ cd test
-➤ python /path/to/ampi/run_ampi.py init -d . -s samples.tsv
+➤ python /path/to/qiimepi/run_qiimepi.py init -d . -s samples.tsv
 
 ➤ ll
 config.yaml
@@ -179,11 +186,10 @@ envs:
   picrust2: "envs/picrust2.yaml"
 ```
 
-### Step 5: Dry run qiime2_wf
+### Step 5: Dry run amplicon_wf
 
 ```bash
-➤ python /path/to/ampi/run_ampi.py \
-  qiime2_wf all --use-conda --dry-run
+➤ python /path/to/qiimepi/run_qiimepi.py amplicon_wf all --use-conda --dry-run
 
 Job stats:
 job                                            count    min threads    max threads
@@ -219,11 +225,11 @@ qiime2_taxonomic_visualization_export              1              1             
 total                                             28              1              8
 ```
 
-### Step 6: Wet run qiime2_wf
+### Step 6: Wet run amplicon_wf
 
 ```bash
-➤ python /path/to/ampi/run_ampi.py \
-  qiime2_wf all \
+➤ python /path/to/qiimepi/run_qiimepi.py \
+  amplicon_wf all \
   --use-conda \
   --run-local \
   --jobs 10 \

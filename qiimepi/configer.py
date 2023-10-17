@@ -23,7 +23,7 @@ def update_config(yaml_file_old, yaml_file_new, yaml_content, remove=True):
         yaml.dump(yaml_content, f)
 
 
-class ampconfig:
+class qiimepi_config:
     """
     config project directory
     """
@@ -67,39 +67,46 @@ class ampconfig:
 
     def __init__(self, work_dir):
         self.work_dir = os.path.realpath(work_dir)
-        self.ampi_dir = os.path.dirname(os.path.abspath(__file__))
+        self.qiimepi_dir = os.path.dirname(os.path.abspath(__file__))
 
-        self.config_file = os.path.join(self.ampi_dir, "config", "config.yaml")
-        self.envs_dir = os.path.join(self.ampi_dir, "envs")
-        self.profiles_dir = os.path.join(self.ampi_dir, "profiles")
+        self.config_file = os.path.join(self.qiimepi_dir, "config", "config.yaml")
+        self.envs_dir = os.path.join(self.qiimepi_dir, "envs")
+        self.profiles_dir = os.path.join(self.qiimepi_dir, "profiles")
         self.new_config_file = os.path.join(self.work_dir, "config.yaml")
 
     def __str__(self):
         message = """
-        ░█████╗░███╗░░░███╗██████╗░██╗
-        ██╔══██╗████╗░████║██╔══██╗██║
-        ███████║██╔████╔██║██████╔╝██║
-        ██╔══██║██║╚██╔╝██║██╔═══╝░██║
-        ██║░░██║██║░╚═╝░██║██║░░░░░██║
-        ╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝
 
-      Omics for All, Open Source for All
+████████████████████████████████████████████████████████████████████████████████████████████████████████
+█░░░░░░░░░░░░░░███░░░░░░░░░░█░░░░░░░░░░█░░░░░░██████████░░░░░░█░░░░░░░░░░░░░░█░░░░░░░░░░░░░░█░░░░░░░░░░█
+█░░▄▀▄▀▄▀▄▀▄▀░░███░░▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀░░░░░░░░░░░░░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█
+█░░▄▀░░░░░░▄▀░░███░░░░▄▀░░░░█░░░░▄▀░░░░█░░▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░▄▀░░█░░░░▄▀░░░░█
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░░░░░▄▀░░░░░░▄▀░░█░░▄▀░░█████████░░▄▀░░██░░▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░▄▀░░██░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░▄▀░░██░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██░░░░░░██░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░░░░░░░░░███░░▄▀░░███
+█░░▄▀░░██░░▄▀░░█████░░▄▀░░█████░░▄▀░░███░░▄▀░░██████████░░▄▀░░█░░▄▀░░█████████░░▄▀░░███████████░░▄▀░░███
+█░░▄▀░░░░░░▄▀░░░░█░░░░▄▀░░░░█░░░░▄▀░░░░█░░▄▀░░██████████░░▄▀░░█░░▄▀░░░░░░░░░░█░░▄▀░░█████████░░░░▄▀░░░░█
+█░░▄▀▄▀▄▀▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀▄▀▄▀░░█░░▄▀░░██████████░░▄▀░░█░░▄▀▄▀▄▀▄▀▄▀░░█░░▄▀░░█████████░░▄▀▄▀▄▀░░█
+█░░░░░░░░░░░░░░░░█░░░░░░░░░░█░░░░░░░░░░█░░░░░░██████████░░░░░░█░░░░░░░░░░░░░░█░░░░░░█████████░░░░░░░░░░█
+████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-      Amplicon sequence analysis pipeline
+                            Omics for All, Open Source for All
+
+                        Quantitative Insights Into Microbial Ecology
+
+    Thanks for using qiimepi.
+
+    A amplicon project has been created at %s
 
 
-      Thanks for using ampi.
+    if you want to create fresh conda environments:
 
-      A amplicon project has been created at %s
+    qiimepi amplicon_wf --conda-create-envs-only
 
+    if you have environments:
 
-        if you want to create fresh conda environments:
-
-        ampi qiime2_wf --conda-create-envs-only
-
-        if you have environments:
-
-        ampi qiime2_wf --help
+    qiimepi amplicon_wf --help
 """ % (
             self.work_dir
         )
@@ -113,7 +120,7 @@ class ampconfig:
         if not os.path.exists(self.work_dir):
             os.mkdir(self.work_dir)
 
-        for sub_dir in ampconfig.sub_dirs:
+        for sub_dir in qiimepi_config.sub_dirs:
             os.makedirs(os.path.join(self.work_dir, sub_dir), exist_ok=True)
 
         for i in os.listdir(self.envs_dir):
