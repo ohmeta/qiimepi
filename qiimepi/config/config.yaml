@@ -93,5 +93,5 @@ output:
 
 
 envs:
-  qiime2: "envs/qiime2-amplicon-2024.2-py38-linux-conda.yml"
+  qiime2: "envs/qiime2.yaml"
   picrust2: "envs/picrust2.yaml"
