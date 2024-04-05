@@ -171,7 +171,7 @@ rule qiime2_phylotree_all:
 
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree_qza"),
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree_qza"),
-            
+
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv"),
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree_qzv")],
-            denoiser=DENOISER)
+            denoiser=DENOISERS)

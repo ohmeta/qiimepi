@@ -29,15 +29,19 @@ os.environ["TMPDIR"] = TMPDIR
 os.makedirs(config["output"]["tmp"], exist_ok=True)
 
 
-DENOISER = []
+DENOISERS = []
 
 if config["params"]["denoise"]["dada2"]["do"]:
-    DENOISER.append("dada2")
+    DENOISERS.append("dada2")
 
 if config["params"]["denoise"]["deblur"]["do"]:
-    DENOISER.append("deblur")
+    DENOISERS.append("deblur")
 
 
+CLASSIFIERS = config["params"]["taxonomic"]["classifiers"]
+
+
+include: "../rules/qiime2_database.smk"
 include: "../rules/qiime2_import.smk"
 include: "../rules/qiime2_denoise.smk"
 include: "../rules/qiime2_feature.smk"
@@ -48,6 +52,7 @@ include: "../rules/qiime2_function.smk"
 
 rule all:
     input:
+        rules.qiime2_database_all.input,
         rules.qiime2_import_all.input,
         rules.qiime2_denoise_all.input,
         rules.qiime2_feature_all.input,
@@ -57,6 +62,9 @@ rule all:
 
 
 localrules:
+    qiime2_database_download,
+    qiime2_database_done,
+    qiime2_database_all,
     qiime2_import_all,
     qiime2_denoise_all,
     qiime2_feature_all,

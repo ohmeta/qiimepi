@@ -1,14 +1,18 @@
+def get_taxonomic_classifier(wildcards):
+    return config["params"]["database"]["taxonomy_classifiers"][wildcards.classifier]
+
+
 rule qiime2_taxonomic_classification:
     input:
+        db_done = os.path.join(config["output"]["database"], "done"),
+        classifier = lambda wildcards: get_taxonomic_classifier(wildcards),
         rep_seq = os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qza")
     output:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_{denoiser}.log")
-    params:
-        classifier = config["params"]["taxonomic"]["classifier"]
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_{denoiser}.log")
     threads:
         config["params"]["taxonomic"]["threads"]
     conda:
@@ -18,7 +22,7 @@ rule qiime2_taxonomic_classification:
         export TMPDIR={TMPDIR}
 
         qiime feature-classifier classify-sklearn \
-        --i-classifier {params.classifier} \
+        --i-classifier {input.classifier} \
         --i-reads {input.rep_seq} \
         --o-classification {output} \
         --p-n-jobs {threads} \
@@ -28,13 +32,13 @@ rule qiime2_taxonomic_classification:
 
 rule qiime2_taxonomic_classification_export:
     input:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
     output:
-        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qza"))
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_qza"))
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_classification_export_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_classification_export_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_classification_export_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_classification_export_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -48,13 +52,13 @@ rule qiime2_taxonomic_classification_export:
 
 rule qiime2_taxonomic_visualization:
     input:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
     output:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qzv")
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_visualization_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_visualization_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_visualization_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_visualization_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -68,13 +72,13 @@ rule qiime2_taxonomic_visualization:
 
 rule qiime2_taxonomic_visualization_export:
     input:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qzv")
     output:
-        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qzv"))
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_qzv"))
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_visualization_export_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_visualization_export_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_visualization_export_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_visualization_export_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -90,13 +94,13 @@ rule qiime2_taxonomic_barplot:
     input:
         metadata = config["params"]["metadata"],
         table = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
-        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
     output:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_barplot.qzv")
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_barplot_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_barplot_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_barplot_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_barplot_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -112,13 +116,13 @@ rule qiime2_taxonomic_barplot:
 
 rule qiime2_taxonomic_barplot_export:
     input:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_barplot.qzv")
     output:
-        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot_qzv"))
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_barplot_qzv"))
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_barplot_export_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_barplot_export_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_barplot_export_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_barplot_export_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -133,13 +137,13 @@ rule qiime2_taxonomic_barplot_export:
 rule qiime2_taxonomic_krona:
     input:
         table = os.path.join(config["output"]["denoise"], "dada2/table.qza"),
-        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza")
+        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
     output:
-        qzv = os.path.join(config["output"]["taxonomic"], "{denoiser}/krona.qzv")
+        qzv = os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/krona.qzv")
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_krona_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_krona_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_krona_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_krona_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -154,13 +158,13 @@ rule qiime2_taxonomic_krona:
 
 rule qiime2_taxonomic_krona_export:
     input:
-        os.path.join(config["output"]["taxonomic"], "{denoiser}/krona.qzv")
+        os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/krona.qzv")
     output:
-        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/krona_qzv"))
+        directory(os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/krona_qzv"))
     benchmark:
-        os.path.join(config["output"]["taxonomic"], "benchmark/taxonomic_krona_export_{denoiser}.benchmark.txt")
+        os.path.join(config["output"]["taxonomic"], "benchmark/{classifier}/taxonomic_krona_export_{denoiser}.benchmark.txt")
     log:
-        os.path.join(config["output"]["taxonomic"], "logs/taxonomic_krona_export_{denoiser}.log")
+        os.path.join(config["output"]["taxonomic"], "logs/{classifier}/taxonomic_krona_export_{denoiser}.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -175,12 +179,13 @@ rule qiime2_taxonomic_krona_export:
 rule qiime2_taxonomic_all:
     input:
         expand([
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qza"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot.qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy_barplot_qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/krona.qzv"),
-            os.path.join(config["output"]["taxonomic"], "{denoiser}/krona_qzv")],
-            denoiser=DENOISER)
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_qza"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_barplot.qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy_barplot_qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/krona.qzv"),
+            os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/krona_qzv")],
+            denoiser=DENOISERS,
+            classifier=CLASSIFIERS)

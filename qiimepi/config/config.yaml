@@ -2,6 +2,27 @@ params:
   samples: "samples.tsv"
   metadata: "samples_metadata.tsv"
 
+
+  # https://docs.qiime2.org/2024.2/data-resources/
+  database:
+    taxonomy_classifiers:
+      silva_138_99_OTUs_full_length_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/silva-138-99-nb-classifier.qza"
+      silva_138_99_OTUs_from_515F_806R_region_of_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/silva-138-99-515-806-nb-classifier.qza"
+      greengenes2_2022.10_full_length_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg_2022_10_backbone_full_length.nb.qza"
+      greengenes2_2022.10_from_515F_806R_region_of_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg_2022_10_backbone.v4.nb.qza"
+
+      weighted_silva_138_99_OTUs_full_length_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza"
+      weighted_greengenes_13_8_99_OTUs_full_length_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg-13-8-99-nb-weighted-classifier.qza"
+      weighted_greengenes_13_8_99_OTUs_from_515F_806R_region_of_sequences:
+        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg-13-8-99-515-806-nb-weighted-classifier.qza"
+
+
   # https://docs.qiime2.org/2023.9/tutorials/importing/
   import:
     type: "SampleData[PairedEndSequencesWithQuality]"
@@ -42,15 +63,15 @@ params:
 
   taxonomic:
     threads: 8
-    classifier: /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-nb-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-515-806-nb-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-nb-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza
+    classifiers: ["silva_138_99_OTUs_full_length_sequences"]
+      # silva_138_99_OTUs_full_length_sequences
+      # silva_138_99_OTUs_from_515F_806R_region_of_sequences
+      # greengenes2_2022.10_full_length_sequences
+      # greengenes2_2022.10_from_515F_806R_region_of_sequences
+      # weighted_silva_138_99_OTUs_full_length_sequences
+      # weighted_greengenes_13_8_99_OTUs_full_length_sequences
+      # weighted_greengenes_13_8_99_OTUs_from_515F_806R_region_of_sequences
 
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg_2022_10_backbone_full_length.nb.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg_2022_10_backbone.v4.nb.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg-13-8-99-515-806-nb-weighted-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg-13-8-99-nb-weighted-classifier.qza
 
   phylotree:
     threads: 8
@@ -63,6 +84,7 @@ params:
 
 output:
   tmp: "results/tmp"
+  database: "results/00.database"
   import: "results/00.import"
   denoise: "results/01.denoise"
   taxonomic: "results/02.taxonomic"

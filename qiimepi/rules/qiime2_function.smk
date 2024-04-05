@@ -81,4 +81,4 @@ rule qiime2_function_all:
         expand([
             os.path.join(config["output"]["function"], "{denoiser}/picrust2/done"),
             os.path.join(config["output"]["function"], "{denoiser}/picrust2/done_description")],
-            denoiser=DENOISER)
+            denoiser=DENOISERS)

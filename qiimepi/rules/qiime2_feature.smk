@@ -16,7 +16,7 @@ rule qiime2_feature_table_summarize:
         --i-table {input.qza} \
         --o-visualization {output.qzv} \
         --m-sample-metadata-file {input.metadata} \
-        >{log} 2>&1 
+        >{log} 2>&1
         '''
 
 
@@ -87,4 +87,4 @@ rule qiime2_feature_all:
             os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qzv"),
             os.path.join(config["output"]["denoise"], "{denoiser}/table_qzv"),
             os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs_qzv")],
-            denoiser=DENOISER)
+            denoiser=DENOISERS)
