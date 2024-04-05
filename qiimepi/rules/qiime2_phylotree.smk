@@ -113,15 +113,15 @@ rule qiime2_phylotree_align_export:
 rule qiime2_phylotree_align_visualization:
     input:
         metadata = config["params"]["metadata"],
+        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza"),
         table = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
-        taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/taxonomy.qza"),
         tree_rooted = os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree.qza")
     output:
-        qzv = os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv")
+        qzv = os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree.qzv")
     benchmark:
-        os.path.join(config["output"]["phylotree"], "benchmark/{denoiser}_phylogenetic_tree_align_visualization.benchmark.txt")
+        os.path.join(config["output"]["phylotree"], "benchmark/{classifier}/{denoiser}_phylogenetic_tree_align_visualization.benchmark.txt")
     log:
-        os.path.join(config["output"]["phylotree"], "logs/{denoiser}_phylogenetic_tree_align_visualization.log")
+        os.path.join(config["output"]["phylotree"], "logs/{classifier}/{denoiser}_phylogenetic_tree_align_visualization.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -138,13 +138,13 @@ rule qiime2_phylotree_align_visualization:
 
 rule qiime2_phylotree_align_visualization_export:
     input:
-        os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv")
+        os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree.qzv")
     output:
-        directory(os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree_qzv"))
+        directory(os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree_qzv"))
     benchmark:
-        os.path.join(config["output"]["phylotree"], "benchmark/{denoiser}_phylogenetic_tree_align_visualization_export.benchmark.txt")
+        os.path.join(config["output"]["phylotree"], "benchmark/{classifier}/{denoiser}_phylogenetic_tree_align_visualization_export.benchmark.txt")
     log:
-        os.path.join(config["output"]["phylotree"], "logs/{denoiser}_phylogenetic_tree_align_visualization_export.log")
+        os.path.join(config["output"]["phylotree"], "logs/{classifier}/{denoiser}_phylogenetic_tree_align_visualization_export.log")
     conda:
         config["envs"]["qiime2"]
     shell:
@@ -172,6 +172,7 @@ rule qiime2_phylotree_all:
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree_qza"),
             os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree_qza"),
 
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree.qzv"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/empress_tree_qzv")],
-            denoiser=DENOISERS)
+            os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree.qzv"),
+            os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree_qzv")],
+            denoiser=DENOISERS,
+            classifier=CLASSIFIERS)
