@@ -7,20 +7,23 @@ params:
   database:
     taxonomy_classifiers:
       silva_138_99_OTUs_full_length_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/silva-138-99-nb-classifier.qza"
-      silva_138_99_OTUs_from_515F_806R_region_of_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/silva-138-99-515-806-nb-classifier.qza"
-      greengenes2_2022.10_full_length_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg_2022_10_backbone_full_length.nb.qza"
-      greengenes2_2022.10_from_515F_806R_region_of_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg_2022_10_backbone.v4.nb.qza"
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-classifier.qza"
+      diverse_weighted_silva_138_99_OTUs_full_length_sequences:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-diverse-weighted-classifier.qza"
+      human_stool_weighted_silva_138_99_OTUs_full_length_sequences:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-human-stool-weighted-classifier.qza"
 
-      weighted_silva_138_99_OTUs_full_length_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza"
-      weighted_greengenes_13_8_99_OTUs_full_length_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg-13-8-99-nb-weighted-classifier.qza"
-      weighted_greengenes_13_8_99_OTUs_from_515F_806R_region_of_sequences:
-        "/mnt/data1/jiezhu/databases/ecogenomics/QIIME2/2024.2/taxonomic_classifier/gg-13-8-99-515-806-nb-weighted-classifier.qza"
+      gtdb_classifier_r220:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_classifier_r220.qza"
+      diverse_weighted_gtdb_classifier_r220:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_diverse_weighted_classifier_r220.qza"
+      human_stool_weighted_gtdb_classifier_r220:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_human_stool_weighted_classifier_r220.qza"
+
+      greengenes2_2024.09_full_length_sequences:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.full-length.nb.sklearn-1.4.2.qza"
+      greengenes2_2024.09_from_515F_806R_region_of_sequences:
+        "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
 
 
   # https://docs.qiime2.org/2023.9/tutorials/importing/
@@ -65,13 +68,13 @@ params:
     threads: 8
     classifiers: ["silva_138_99_OTUs_full_length_sequences"]
       # silva_138_99_OTUs_full_length_sequences
-      # silva_138_99_OTUs_from_515F_806R_region_of_sequences
-      # greengenes2_2022.10_full_length_sequences
-      # greengenes2_2022.10_from_515F_806R_region_of_sequences
-      # weighted_silva_138_99_OTUs_full_length_sequences
-      # weighted_greengenes_13_8_99_OTUs_full_length_sequences
-      # weighted_greengenes_13_8_99_OTUs_from_515F_806R_region_of_sequences
-
+      # diverse_weighted_silva_138_99_OTUs_full_length_sequences
+      # human_stool_weighted_silva_138_99_OTUs_full_length_sequences
+      # gtdb_classifier_r220
+      # diverse_weighted_gtdb_classifier_r220
+      # human_stool_weighted_gtdb_classifier_r220
+      # greengenes2_2024.09_full_length_sequences
+      # greengenes2_2024.09_from_515F_806R_region_of_sequences
 
   phylotree:
     threads: 8

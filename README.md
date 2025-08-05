@@ -149,15 +149,15 @@ params:
 
   taxonomic:
     threads: 8
-    classifier: /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-nb-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-515-806-nb-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-nb-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/silva-138-99-nb-weighted-classifier.qza
-
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg_2022_10_backbone_full_length.nb.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg_2022_10_backbone.v4.nb.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg-13-8-99-515-806-nb-weighted-classifier.qza
-    # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/taxonomic_classifier/gg-13-8-99-nb-weighted-classifier.qza
+    classifier: /databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-classifier.qza
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-classifier.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-diverse-weighted-classifier.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-human-stool-weighted-classifier.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_classifier_r220.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_diverse_weighted_classifier_r220.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_human_stool_weighted_classifier_r220.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.full-length.nb.sklearn-1.4.2.qza"
+      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
 
   phylotree:
     threads: 8
@@ -329,22 +329,4 @@ Phred Score table
 | L - Illumina 1.8+   |   Phred+33   |  raw reads typically (0, 41)  |
 | P - PacBio          |   Phred+33   |  HiFi reads typically (0, 93) |
 
-### [QIIME2 taxonomy database Version 2023.9](https://docs.qiime2.org/2022.11/data-resources)
-
-#### Taxonomy classifiers for use with q2-feature-classifier
-
-- [Silva 138 99% OTUs full-length sequences](https://data.qiime2.org/2023.9/common/silva-138-99-nb-classifier.qza)
-- [Silva 138 99% OTUs from 515F/806R region of sequences](https://data.qiime2.org/2023.9/common/silva-138-99-515-806-nb-classifier.qza)
-- [Greengenes 2022.10 full-length sequences](https://https://data.qiime2.org/classifiers/greengenes/gg_2022_10_backbone_full_length.nb.qza)
-- [Greengenes 2022.10 from 515F/806R region of sequences](https://data.qiime2.org/classifiers/greengenes/gg_2022_10_backbone.v4.nb.qza)
-
-#### Weighted Taxonomic Classifiers
-
-- [Weighted Silva 138 99% OTUs full-length sequences](https://data.qiime2.org/2023.9/common/silva-138-99-nb-weighted-classifier.qza)
-- [Weighted Greengenes 13_8 99% OTUs full-length sequences](https://data.qiime2.org/2023.9/common/gg-13-8-99-nb-weighted-classifier.qza)
-- [Weighted Greengenes 13_8 99% OTUs from 515F/806R region of sequences](https://data.qiime2.org/2023.9/common/gg-13-8-99-515-806-nb-weighted-classifier.qza)
-
-#### SEPP reference databases
-
-- [Silva 128 SEPP reference database](https://data.qiime2.org/2023.9/common/sepp-refs-silva-128.qza)
-- [Greengenes 13_8 SEPP reference database](https://data.qiime2.org/2023.9/common/sepp-refs-gg-13-8.qza)
+### [QIIME2 taxonomy database Version 2024.5 - Present](https://library.qiime2.org/data-resources#qiime-2-2024-5-present)
