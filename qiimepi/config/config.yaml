@@ -80,11 +80,13 @@ params:
       # greengenes2_2024_09_from_515F_806R_region_of_sequences
 
   phylotree:
+    do: False
     threads: 8
     sepp_db: /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/sepp_reference_databases/sepp-refs-silva-128.qza
     # /home/jiezhu/databases/ecogenomics/QIIME2/2023.9/sepp_reference_databases/sepp-refs-gg-13-8.qza
 
   function:
+    do: True
     threads: 8
 
 

@@ -62,7 +62,14 @@ rule all:
 
 
 localrules:
-    qiime2_database_download,
+    qiime2_database_download_silva_138_99_OTUs_full_length_sequences,
+    qiime2_database_download_diverse_weighted_silva_138_99_OTUs_full_length_sequences,
+    qiime2_database_download_human_stool_weighted_silva_138_99_OTUs_full_length_sequences,
+    qiime2_database_download_gtdb_classifier_r220,
+    qiime2_database_download_diverse_weighted_gtdb_classifier_r220,
+    qiime2_database_download_human_stool_weighted_gtdb_classifier_r220,
+    qiime2_database_download_greengenes2_2024_09_full_length_sequences,
+    qiime2_database_download_greengenes2_2024_09_from_515F_806R_region_of_sequences,
     qiime2_database_done,
     qiime2_database_all,
     qiime2_import_all,

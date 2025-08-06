@@ -154,23 +154,27 @@ rule qiime2_phylotree_align_visualization_export:
         '''
 
 
-rule qiime2_phylotree_all:
-    input:
-        expand([
-            os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree.qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree_placements.qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree_qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree_placements_qza"),
+if config["params"]["phylotree"]["do"]:
+    rule qiime2_phylotree_all:
+        input:
+            expand([
+                os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree.qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree_placements.qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree_qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/sepp/tree_placements_qza"),
 
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree.qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree.qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/alignment.qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/masked_alignment.qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree.qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree.qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/alignment.qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/masked_alignment.qza"),
 
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree_qza"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree_qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/tree_qza"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree_qza"),
 
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree.qzv"),
-            os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree_qzv")],
-            denoiser=DENOISERS,
-            classifier=CLASSIFIERS)
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree.qzv"),
+                os.path.join(config["output"]["phylotree"], "{denoiser}/align/{classifier}/empress_tree_qzv")],
+                denoiser=DENOISERS,
+                classifier=CLASSIFIERS)
+else:
+        rule qiime2_phylotree_all:
+            input:

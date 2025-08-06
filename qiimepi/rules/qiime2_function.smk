@@ -76,9 +76,13 @@ rule qiime2_function_picrust2_add_descriptions:
         '''
 
 
-rule qiime2_function_all:
-    input:
-        expand([
-            os.path.join(config["output"]["function"], "{denoiser}/picrust2/done"),
-            os.path.join(config["output"]["function"], "{denoiser}/picrust2/done_description")],
-            denoiser=DENOISERS)
+if config["params"]["function"]["do"]:
+    rule qiime2_function_all:
+        input:
+            expand([
+                os.path.join(config["output"]["function"], "{denoiser}/picrust2/done"),
+                os.path.join(config["output"]["function"], "{denoiser}/picrust2/done_description")],
+                denoiser=DENOISERS)
+else:
+    rule qiime2_function_all:
+        input:
