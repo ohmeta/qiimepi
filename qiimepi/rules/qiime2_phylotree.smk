@@ -112,7 +112,6 @@ rule qiime2_phylotree_align_export:
 
 rule qiime2_phylotree_align_visualization:
     input:
-        metadata = config["params"]["metadata"],
         taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza"),
         table = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
         tree_rooted = os.path.join(config["output"]["phylotree"], "{denoiser}/align/rooted_tree.qza")
@@ -129,7 +128,6 @@ rule qiime2_phylotree_align_visualization:
         qiime empress community-plot \
         --i-tree {input.tree_rooted} \
         --i-feature-table {input.table} \
-        --m-sample-metadata-file {input.metadata} \
         --m-feature-metadata-file {input.taxonomy} \
         --o-visualization {output.qzv} \
         >{log} 2>&1

@@ -92,7 +92,6 @@ rule qiime2_taxonomic_visualization_export:
 
 rule qiime2_taxonomic_barplot:
     input:
-        metadata = config["params"]["metadata"],
         table = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza"),
         taxonomy = os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
     output:
@@ -108,7 +107,6 @@ rule qiime2_taxonomic_barplot:
         qiime taxa barplot \
         --i-table {input.table} \
         --i-taxonomy {input.taxonomy} \
-        --m-metadata-file {input.metadata} \
         --o-visualization {output} \
         >{log} 2>&1
         '''
