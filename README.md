@@ -105,11 +105,39 @@ samples.miseq_sop.tsv
 ```bash
 ➤ cat config.yaml
 
+
 params:
   samples: "samples.tsv"
-  metadata: "samples_metadata.tsv"
 
-  # https://docs.qiime2.org/2021.11/tutorials/importing/
+  # https://docs.qiime2.org/2024.2/data-resources/
+  database:
+    taxonomy_classifiers:
+      silva_138_99_OTUs_full_length_sequences:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/silva/silva-138-99-nb-classifier.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-classifier.qza"
+      diverse_weighted_silva_138_99_OTUs_full_length_sequences:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/silva/silva-138-99-nb-diverse-weighted-classifier.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-diverse-weighted-classifier.qza"
+      human_stool_weighted_silva_138_99_OTUs_full_length_sequences:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/silva/silva-138-99-nb-human-stool-weighted-classifier.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-human-stool-weighted-classifier.qza"
+      gtdb_classifier_r220:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/gtdb/gtdb_classifier_r220.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_classifier_r220.qza"
+      diverse_weighted_gtdb_classifier_r220:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/gtdb/gtdb_diverse_weighted_classifier_r220.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_diverse_weighted_classifier_r220.qza"
+      human_stool_weighted_gtdb_classifier_r220:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/gtdb/gtdb_human_stool_weighted_classifier_r220.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_human_stool_weighted_classifier_r220.qza"
+      greengenes2_2024_09_full_length_sequences:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/greengenes2/2024.09.backbone.full-length.nb.sklearn-1.4.2.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.full-length.nb.sklearn-1.4.2.qza"
+      greengenes2_2024_09_from_515F_806R_region_of_sequences:
+        remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/greengenes2/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
+        local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
+
+  # https://docs.qiime2.org/2023.9/tutorials/importing/
   import:
     type: "SampleData[PairedEndSequencesWithQuality]"
     # EMPSingleEndSequences
@@ -149,15 +177,15 @@ params:
 
   taxonomic:
     threads: 8
-    classifier: /databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-classifier.qza
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-classifier.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-diverse-weighted-classifier.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/silva-138-99-nb-human-stool-weighted-classifier.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_classifier_r220.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_diverse_weighted_classifier_r220.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/gtdb_human_stool_weighted_classifier_r220.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.full-length.nb.sklearn-1.4.2.qza"
-      # "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
+    classifiers: ["silva_138_99_OTUs_full_length_sequences", "gtdb_classifier_r220", "greengenes2_2024_09_full_length_sequences"]
+      # silva_138_99_OTUs_full_length_sequences
+      # diverse_weighted_silva_138_99_OTUs_full_length_sequences
+      # human_stool_weighted_silva_138_99_OTUs_full_length_sequences
+      # gtdb_classifier_r220
+      # diverse_weighted_gtdb_classifier_r220
+      # human_stool_weighted_gtdb_classifier_r220
+      # greengenes2_2024_09_full_length_sequences
+      # greengenes2_2024_09_from_515F_806R_region_of_sequences
 
   phylotree:
     threads: 8
@@ -170,6 +198,7 @@ params:
 
 output:
   tmp: "results/tmp"
+  database: "results/00.database"
   import: "results/00.import"
   denoise: "results/01.denoise"
   taxonomic: "results/02.taxonomic"
@@ -180,6 +209,7 @@ output:
 envs:
   qiime2: "envs/qiime2.yaml"
   picrust2: "envs/picrust2.yaml"
+
 ```
 
 ### Step 5: Dry run amplicon_wf
