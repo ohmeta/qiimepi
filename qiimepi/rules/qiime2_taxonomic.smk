@@ -1,11 +1,11 @@
-def get_taxonomic_classifier(wildcards):
-    return config["params"]["database"]["taxonomy_classifiers"][wildcards.classifier]
+def get_classifier(wildcards):
+    classfier = wildcards.classifier
+    return config["params"]["database"]["taxonomy_classifiers"][classfier]["local"]
 
 
 rule qiime2_taxonomic_classification:
     input:
-        db_done = os.path.join(config["output"]["database"], "done"),
-        classifier = lambda wildcards: get_taxonomic_classifier(wildcards),
+        classifier = lambda wildcards: get_classifier(wildcards),
         rep_seq = os.path.join(config["output"]["denoise"], "{denoiser}/rep_seqs.qza")
     output:
         os.path.join(config["output"]["taxonomic"], "{denoiser}/{classifier}/taxonomy.qza")
