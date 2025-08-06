@@ -1,7 +1,5 @@
 params:
   samples: "samples.tsv"
-  metadata: "samples_metadata.tsv"
-
 
   # https://docs.qiime2.org/2024.2/data-resources/
   database:
@@ -30,7 +28,6 @@ params:
       greengenes2_2024_09_from_515F_806R_region_of_sequences:
         remote: "https://data.qiime2.org/classifiers/sklearn-1.4.2/greengenes2/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
         local: "/databases/ecogenomics/QIIME2/2024.5/taxonomic_classifier/2024.09.backbone.v4.nb.sklearn-1.4.2.qza"
-
 
   # https://docs.qiime2.org/2023.9/tutorials/importing/
   import:

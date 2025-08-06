@@ -1,6 +1,5 @@
 rule qiime2_feature_table_summarize:
     input:
-        metadata = config["params"]["metadata"],
         qza = os.path.join(config["output"]["denoise"], "{denoiser}/table.qza")
     output:
         qzv = os.path.join(config["output"]["denoise"], "{denoiser}/table.qzv")
@@ -15,7 +14,6 @@ rule qiime2_feature_table_summarize:
         qiime feature-table summarize \
         --i-table {input.qza} \
         --o-visualization {output.qzv} \
-        --m-sample-metadata-file {input.metadata} \
         >{log} 2>&1
         '''
 
